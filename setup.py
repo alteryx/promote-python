@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'promote', 'v
     exec(version)
 
     setup(
-        name="promote",
+        name="alteryx-promote",
         version=__version__,
         author="Alteryx",
         author_email="dev@yhathq.com",
