@@ -1,7 +1,7 @@
 import helpers
 import promote
 import joblib
-from schema import Schema
+from schema import Schema, And
 
 #optional for decorator
 
@@ -13,7 +13,7 @@ p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://sandbox.c.yha
 rng = joblib.load('/Users/glamp/workspace/github.com/alteryx/promote-python-client/tests/sample-model/pickles/rng.pkl')
 
 # schema is optional
-@promote.validate_json(Schema([{'name': And(str, len)}]))
+@promote.validate_json(Schema({'name': And(str, len)}))
 def promoteModel(data):
     print(rng)
     prediction = helpers.punctuation.cleanName(str(data))
@@ -31,6 +31,6 @@ promoteModel(testdata)
 # 1. test that testdata is valid json
 # 2. THERE IS test data, run promoteModel(testdata) before deployment
 
-p.deploy("HelloModel", promoteModel, testdata, verbose=2)
-# p.deploy("HelloModel", promoteModel, testdata, confirm=True, dry_run=False, verbose=0)
+p.deploy("HelloModel", testdata, verbose=2)
+# p.deploy("HelloModel", testdata, confirm=True, dry_run=False, verbose=0)
 # p.predict("HelloModel", testdata)

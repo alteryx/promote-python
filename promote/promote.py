@@ -74,6 +74,7 @@ class Promote(object):
             with open(os.path.join(pickle_dir, f), 'rb') as fh:
                 obj = fh.read()
                 obj = base64.encodebytes(obj).decode('utf-8')
+                # TODO: validate format
                 objects.append(dict(name=f, value=obj))
 
         return objects
@@ -102,6 +103,7 @@ class Promote(object):
                 continue
 
             with open(helper_file, 'r') as fh:
+                # TODO: validate format
                 helpers.append(dict(
                     name=os.path.join('helpers', filename),
                     contnet=fh.read()
@@ -185,7 +187,7 @@ class Promote(object):
             self._confirm()
         
         logging.debug(bundle)
-        if self.dry_run==True:
+        if dry_run==True:
             return bundle
 
         response = self._upload_deployment(bundle)
