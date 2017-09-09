@@ -1,6 +1,7 @@
 import helpers
 import promote
 import joblib
+from schema import Schema
 
 #optional for decorator
 
@@ -12,7 +13,7 @@ p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://sandbox.c.yha
 rng = joblib.load('/Users/glamp/workspace/github.com/alteryx/promote-python-client/tests/sample-model/pickles/rng.pkl')
 
 # schema is optional
-# @promote.schema(Schema([{'name': And(str, len)}]))
+@promote.validate_json(Schema([{'name': And(str, len)}]))
 def promoteModel(data):
     print(rng)
     prediction = helpers.punctuation.cleanName(str(data))
