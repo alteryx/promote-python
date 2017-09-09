@@ -14,11 +14,14 @@ class Promote(object):
     """
     Promote allows you to interact with the Promote API.
     
-    Arguments
-    =========
+    Parameters
+    ==========
     username: str
+        Your Promote username
     apikey: str
+        Your Promote APIKEY
     url: str
+        URL of your promote server. i.e. https://promote.acmecorp.com/, http://10.252.2.10/
 
     Examples
     ========
@@ -55,7 +58,9 @@ class Promote(object):
             source = f.read()
         
         if 'def promoteModel(' not in source:
-            raise Exception('Your model needs to implement the `promoteModel` function. Function definition does not appear in {}'.format(self.deployment_file))
+            msg = 'Your model needs to implement the `promoteModel`'
+            msg += ' function. Function definition does not appear in {}'
+            raise Exception(msg.format(self.deployment_file))
         return source
     
     def _get_objects(self):
@@ -96,21 +101,23 @@ class Promote(object):
             if not os.path.isfile(helper_file):
                 continue
 
-            helpers.append(dict(
-                name=os.path.join('helpers', filename),
-                contnet=open(helper_file, 'r').read()
-            ))
+            with open(helper_file, 'r') as fh:
+                helpers.append(dict(
+                    name=os.path.join('helpers', filename),
+                    contnet=fh.read()
+                ))
         return helpers
 
     def _get_bundle(self, modelName):
         bundle = dict(
+            # TODO: which one of these is correct?
             modelname=modelName,
             modelName=modelName,
             language="python",
             username=self.username,
+            # below are the things we need to grab
             code=None,
             objects={},
-            packages=[],
             modules=[],
             image=None, # do we need this anymore?,
             reqs="",
@@ -139,18 +146,28 @@ class Promote(object):
         bundle = json.dumps(bundle)
         return utils.post_file(deployment_url, (self.username, self.apikey), bundle)
 
-    def deploy(self, modelName, modelFunction, testdata, confirm=False, dry_run=False, verbose=0):
+    def deploy(self, modelName, testdata, confirm=False, dry_run=False, verbose=0):
         """
-        Arguments
-        =========
-        modelFunction
-        testdata
-        confirm=False
-        dry_run=False
-        verbose=0
+        Deploys a model to your Promote instance. If it's the first time the model is being deployed, 
+        a new endpoint will be created for the model.
+
+        Parameters
+        ==========
+        modelName: str
+            Name of the model you're deploying. This will be the name of the endpoint for the model as well.
+        testdata: dict, list
+            Sample data that will be used to validate your model can successfully execute.
+        confirm: bool (default: False)
+            If True, deployment will pause before uploading to the server and validate that you actually want 
+            to deploy.
+        dry_run: bool (default: False)
+            If True, deployment will exit prior to uploading to the server and will instead return the bundle.
+        verbose: int (default: 0; 0-2)
+            Controls the amount of logs displayed. Higher values indiciate more will be shown.
 
         Examples
         ========
+        >>> p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=False, verbose=0)
         """
         levels = {
             0: logging.WARNING,
@@ -167,13 +184,33 @@ class Promote(object):
         if confirm==True:
             self._confirm()
         
-        pp.pprint(bundle)
+        logging.debug(bundle)
+        if self.dry_run==True:
+            return bundle
+
         response = self._upload_deployment(bundle)
+        
+        # TODO: maybe not return the raw response (?)
         return response
     
-    def predict(self, modelName, data):
+    def predict(self, modelName, data, username=None):
+        """
+        Makes a prediction using the model's endpoint on your Promote server.
+
+        Parameters
+        ==========
+        modelName: str
+            Name of the model you'd like to query
+        data: dict, list
+            Data you'd like to send to the model to be scored.
+        username: str
+            Username of the model you'd like to query. This will default to the one set in the Promote constructor.
+            However if you'd like to query another person's model or a production model, this will come in handy.
+        """
         # TODO: correct this
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'model', modelName))
+        username = username if username else self.username
+
         headers = {
             "Content-Type": "application/json"
         }
