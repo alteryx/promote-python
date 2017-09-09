@@ -4,6 +4,7 @@ import logging
 import copy
 import base64
 import pickle
+from schema import Schema, And
 import sys
 import os
 
@@ -82,6 +83,34 @@ class Tests(unittest.TestCase):
             raise Exception("shouldn't get here")
         except Exception as ex:
             self.assertIsNotNone(ex)
+
+    def testJsonValidatorWrongSchema(self):
+        try:
+            @promote.validate_json('not a schema object')
+            def test_function(data):
+                return data
+        except Exception as ex:
+            self.assertIsNotNone(ex)
+
+    def testJsonValidatorValidJSON(self):
+        @promote.validate_json(Schema({'name': And(str, len)}))
+        def test_function(data):
+            return data
+
+        testdata = { 'name': 'Alteryx' }
+        self.assertEqual(testdata, test_function(testdata))
+
+    def testJsonValidatorInvalidJSON(self):
+        @promote.validate_json(Schema({'name': And(str, len)}))
+        def test_function(data):
+            return data
+
+        testdata = { 'name': True }
+        try:
+           test_function(testdata)
+        except Exception as ex:
+            self.assertIsNotNone(ex)
+
         
 if __name__ == '__main__':
     unittest.main()
