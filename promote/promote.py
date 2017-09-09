@@ -67,15 +67,14 @@ class Promote(object):
         pickle_dir = os.path.join(self.deployment_dir, 'pickles')
         if not os.path.exists(pickle_dir):
             logging.info('no pickles directory found in {}'.format(pickle_dir))
-            return []
+            return {}
         
-        objects = []
+        objects = {}
         for f in os.listdir(pickle_dir):
             with open(os.path.join(pickle_dir, f), 'rb') as fh:
                 obj = fh.read()
                 obj = base64.encodebytes(obj).decode('utf-8')
-                # TODO: validate format
-                objects.append(dict(name=f, value=obj))
+                objects[f] = obj
 
         return objects
 
@@ -95,7 +94,9 @@ class Promote(object):
             loging.info('helpers directory does not exist: {}'.format(helpers_dir))
             return []
 
-        helpers = []
+        helpers = [
+            dict(name='__init__.py', parent_dir='helpers', source='')
+        ]
         for filename in os.listdir(helpers_dir):
             helper_file = os.path.join(helpers_dir, filename)
 
@@ -103,10 +104,10 @@ class Promote(object):
                 continue
 
             with open(helper_file, 'r') as fh:
-                # TODO: validate format
                 helpers.append(dict(
-                    name=os.path.join('helpers', filename),
-                    contnet=fh.read()
+                    name=filename,
+                    parent_dir='helpers',
+                    source=fh.read()
                 ))
         return helpers
 

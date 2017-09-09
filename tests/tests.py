@@ -52,17 +52,16 @@ class Tests(unittest.TestCase):
 
     def testGetObjectsMissingPickleDir(self):
         self.p.deployment_dir = '/non-existant-directory'
-        self.assertEqual([], self.p._get_objects())
+        self.assertEqual({}, self.p._get_objects())
 
     def testGetObjects(self):
         self.assertEqual(2, len(self.p._get_objects()))
     
     def testGetObjectsAreSerializeable(self):
         objects = self.p._get_objects()
-        for obj in objects[1:]:
-            value = obj['value']
-            obj = base64.decodebytes(bytes(value, 'utf-8'))
-            self.assertIsNotNone(pickle.loads(obj))
+        value = objects['rng.pkl']
+        obj = base64.decodebytes(bytes(value, 'utf-8'))
+        self.assertIsNotNone(pickle.loads(obj))
 
     def testGetSourceForModel(self):
         extracted_code = self.p._get_function_source_code()
