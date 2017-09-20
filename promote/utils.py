@@ -26,6 +26,8 @@ def post_file(url, auth, json_string):
     }
 
     try:
+        # TODO: could do this?
+        # r = requests.post(url=url, files=files, auth=auth, params={'language': 'python' })
         r = requests.post(url=url, files=files, auth=auth)
         if r.status_code != 200:
             r.raise_for_status()

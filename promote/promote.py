@@ -91,7 +91,7 @@ class Promote(object):
     def _get_helper_modules(self):
         helpers_dir = os.path.join(self.deployment_dir, 'helpers')
         if not os.path.exists(helpers_dir):
-            loging.info('helpers directory does not exist: {}'.format(helpers_dir))
+            logging.info('helpers directory does not exist: {}'.format(helpers_dir))
             return []
 
         helpers = [
@@ -100,10 +100,11 @@ class Promote(object):
         for filename in os.listdir(helpers_dir):
             helper_file = os.path.join(helpers_dir, filename)
 
-            if not os.path.isfile(helper_file):
+            if not os.path.isfile(helper_file) or helper_file.endswith('.pyc'):
                 continue
 
             with open(helper_file, 'r') as fh:
+                logging.info('appending file {}'.format(filename))
                 helpers.append(dict(
                     name=filename,
                     parent_dir='helpers',
@@ -145,7 +146,7 @@ class Promote(object):
 
     def _upload_deployment(self, bundle):
         # TODO: correct this
-        deployment_url = urllib.parse.urljoin(self.url, 'deploy')
+        deployment_url = urllib.parse.urljoin(self.url, '/api/deploy/python')
         bundle = json.dumps(bundle)
         return utils.post_file(deployment_url, (self.username, self.apikey), bundle)
 
@@ -170,7 +171,7 @@ class Promote(object):
 
         Examples
         ========
-        >>> p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=False, verbose=0)
+        >>> p.deploy("HelloModel", testdata=testdata, confirm=True, dry_run=False, verbose=0)
         """
         levels = {
             0: logging.WARNING,
