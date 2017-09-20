@@ -56,7 +56,8 @@ class Promote(object):
         source = ''
         with open(self.deployment_file, 'r') as f:
             source = f.read()
-        
+
+        # TODO: talk to Colin about this
         if 'def promoteModel(' not in source:
             msg = 'Your model needs to implement the `promoteModel`'
             msg += ' function. Function definition does not appear in {}'
@@ -103,20 +104,19 @@ class Promote(object):
             if not os.path.isfile(helper_file) or helper_file.endswith('.pyc'):
                 continue
 
-            with open(helper_file, 'r') as fh:
+            with open(helper_file, 'rb') as fh:
                 logging.info('appending file {}'.format(filename))
+                source = fh.read().decode('utf-8')
                 helpers.append(dict(
                     name=filename,
                     parent_dir='helpers',
-                    source=fh.read()
+                    source=source
                 ))
         return helpers
 
     def _get_bundle(self, modelName):
         bundle = dict(
-            # TODO: which one of these is correct?
             modelname=modelName,
-            modelName=modelName,
             language="python",
             username=self.username,
             # below are the things we need to grab
@@ -131,9 +131,8 @@ class Promote(object):
 
         # extract source code for function
         bundle['code'] = self._get_function_source_code()
-        # get serialized objects
+        # get pickles
         bundle['objects'] = self._get_objects()
-        # get requirements
         bundle['reqs'] = self._get_requirements()
         bundle['modules'] = self._get_helper_modules()
 
@@ -142,7 +141,7 @@ class Promote(object):
     def _confirm(self):
         response = raw_input("Are you sure you'd like to deploy this model? (y/N): ")
         if response.lower() != "y":
-            sys.exit(0)
+            sys.exit(1)
 
     def _upload_deployment(self, bundle):
         # TODO: correct this
@@ -199,7 +198,8 @@ class Promote(object):
     
     def predict(self, modelName, data, username=None):
         """
-        Makes a prediction using the model's endpoint on your Promote server.
+        Makes a prediction using the model's endpoint on your Promote server. 
+        You can query a different user's model by passing a username.
 
         Parameters
         ==========
@@ -210,6 +210,13 @@ class Promote(object):
         username: str
             Username of the model you'd like to query. This will default to the one set in the Promote constructor.
             However if you'd like to query another person's model or a production model, this will come in handy.
+
+        Examples
+        ========
+        >>> p = Promote("tom", "4b48cfdecd0841c1b85a806d3add5b11", "https://my-promote.mycompany.com/")
+        >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" })
+        # uses billybob's HelloWorld 
+        >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
         """
         # TODO: correct this
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'model', modelName))
