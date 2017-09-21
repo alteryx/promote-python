@@ -21,7 +21,8 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'promote', 'v
         install_requires=[
             "progressbar2==3.10.1",
             "requests==2.11.1",
-            "requests-toolbelt==0.7.0"
+            "requests-toolbelt==0.7.0",
+            "schema==0.6.5"
         ],
         long_description=open("README.rst").read(),
         keywords=['alteryx', 'scikit-learn', 'numpy', 'pandas'],
