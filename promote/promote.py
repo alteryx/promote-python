@@ -65,14 +65,14 @@ class Promote(object):
         return source
     
     def _get_objects(self):
-        pickle_dir = os.path.join(self.deployment_dir, 'pickles')
-        if not os.path.exists(pickle_dir):
-            logging.info('no pickles directory found in {}'.format(pickle_dir))
+        objects_dir = os.path.join(self.deployment_dir, 'objects')
+        if not os.path.exists(objects_dir):
+            logging.info('no pickles directory found in {}'.format(objects_dir))
             return {}
         
         objects = {}
-        for f in os.listdir(pickle_dir):
-            with open(os.path.join(pickle_dir, f), 'rb') as fh:
+        for f in os.listdir(objects_dir):
+            with open(os.path.join(objects_dir, f), 'rb') as fh:
                 obj = fh.read()
                 obj = base64.encodebytes(obj).decode('utf-8')
                 objects[f] = obj
