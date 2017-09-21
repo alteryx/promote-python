@@ -83,10 +83,12 @@ class Promote(object):
         requirements_file = os.path.join(self.deployment_dir, 'requirements.txt')
         if not os.path.exists(requirements_file):
             logging.info('no requirements file found in {}'.format(requirements_file))
-            return ''
+            raise Exception("You don't have a requirements.txt file. It's impossible to deploy a model without it")
         
         with open(requirements_file, 'r') as f:
             requirements = f.read()
+            if "promote" not in requirements:
+                raise Exception("You don't have Promote listed as a requirement. It's impossible to deploy a model without it")
         return requirements
 
     def _get_helper_modules(self):
