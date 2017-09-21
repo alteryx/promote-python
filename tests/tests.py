@@ -48,7 +48,11 @@ class Tests(unittest.TestCase):
 
     def testMissingRequirementsFile(self):
         self.p.deployment_dir = '/non-existant-directory'
-        self.assertEqual('', self.p._get_requirements())
+        try:
+            self.p._get_requirements()
+            raise Exception("shouldn't get here")
+        except Exception as ex:
+            self.assertIsNotNone(ex)
 
     def testGetObjectsMissingPickleDir(self):
         self.p.deployment_dir = '/non-existant-directory'
