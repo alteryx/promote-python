@@ -18,11 +18,11 @@ def promoteModel(data):
     return {"prediction": prediction}
     
 # some test data
-testdata = [[5.1, 3.5, 1.4, 0.2], [ 6.7,  3.1,  5.6,  2.4]]
+testdata = [[5.1, 3.5, 1.4, 0.2], [ 6.7, 3.1, 5.6, 2.4]]
 promoteModel(testdata)
 
 # name and deploy our model
-p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=True, verbose=0)
+p.deploy("IrisClassifier", promoteModel, testdata=testdata, confirm=True, dry_run=True, verbose=0)
 
 # once our model is deployed and online, we can send data and recieve predictions
-# p.predict("HelloModel", testdata)
+# p.predict("IrisClassifier", testdata)

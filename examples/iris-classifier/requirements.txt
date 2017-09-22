@@ -1,1 +1,4 @@
 promote
+pandas
+numpy
+scikit-learn
