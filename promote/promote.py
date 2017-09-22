@@ -184,7 +184,6 @@ class Promote(object):
             level=levels.get(verbose, logging.WARNING)
         )
 
-        print(os.environ)
         if os.environ.get('PROMOTE_PRODUCTION'):
             logging.warning('running production. deployment will not occur')
             return
