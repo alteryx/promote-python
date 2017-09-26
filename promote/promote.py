@@ -25,7 +25,7 @@ class Promote(object):
 
     Examples
     ========
-    >>> p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://sandbox.c.yhat.com/")
+    >>> p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://my-promote.mycompany.com/")
     >>> p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=False, verbose=0)
     >>> p.predict("HelloWorld", { "name": "Colin" })
     """

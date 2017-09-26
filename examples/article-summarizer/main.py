@@ -1,4 +1,6 @@
 import promote
+from schema import Schema
+
 import newspaper
 from newspaper import Article
 
@@ -19,11 +21,12 @@ def promoteModel(data):
 TESTURL = "https://new.surfline.com/surf-news/santa-cruz-surf-character-catches-final-wave/10365"
 TESTDATA = {"url": TESTURL}
 
-promoteModel(TESTDATA)
+# test the model locally
+print(promoteModel(TESTDATA))
 
 # name and deploy our model
-p.deploy("ArticleSummarizer", promoteModel, TESTDATA,
-         confirm=True, dry_run=True, verbose=0)
+# p.deploy("ArticleSummarizer", promoteModel, TESTDATA,
+        #  confirm=True, dry_run=True, verbose=0)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("ArticleSummarizer", testdata)

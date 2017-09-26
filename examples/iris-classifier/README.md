@@ -9,6 +9,7 @@ Project structure:
 │   └── getclass.py
 ├── objects
 │   └── model_weights.pkl
+├── promote.sh
 ├── requirements.txt
 └── train.py
 ```
