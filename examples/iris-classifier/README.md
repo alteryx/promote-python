@@ -9,6 +9,7 @@ Project structure:
 │   └── getclass.py
 ├── objects
 │   └── model_weights.pkl
+├── promote.sh
 ├── requirements.txt
 └── train.py
 ```
@@ -29,5 +30,6 @@ $ python deploy.py
 
 Example input:
 
+[[5.1, 3.5, 1.4, 0.2], [6.7, 3.1, 5.6, 2.4]]
 
 
