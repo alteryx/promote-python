@@ -184,6 +184,10 @@ class Promote(object):
             level=levels.get(verbose, logging.WARNING)
         )
 
+        if os.environ.get('PROMOTE_PRODUCTION'):
+            logging.warning('running production. deployment will not occur')
+            return
+
         bundle = self._get_bundle(modelName)
 
         if confirm==True:
