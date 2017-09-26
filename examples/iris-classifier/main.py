@@ -7,7 +7,11 @@ from sklearn.externals import joblib
 WEIGHTS = joblib.load('./objects/model_weights.pkl')
 
 # instanciate the Promote class with our API information
-p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://sandbox.c.yhat.com/")
+USERNAME = "colin"
+API_KEY = "789asdf879h789a79f79sf79s"
+PROMOTE_URL = "https://sandbox.c.yhat.com/"
+
+p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 #validate that we only process data that has ints and floats
 @promote.validate_json(Schema([[int, float]]))

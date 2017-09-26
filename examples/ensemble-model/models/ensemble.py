@@ -1,3 +1,4 @@
+from sklearn import datasets
 from sklearn.ensemble import VotingClassifier
 
 from sklearn.externals import joblib
@@ -16,4 +17,4 @@ eclf = VotingClassifier(estimators=[(
 eclf = eclf.fit(X, y)
 
 # from sklearn.externals import joblib
-joblib.dump(eclf, './objects/ensemble-model.pkl')
+joblib.dump(eclf, './objects/ensemble.pkl')

@@ -1,0 +1,8 @@
+low,high,desc
+-100,45,Very Cold
+46,53,Cold
+54,62,Cool
+63,72,Mild
+73,80,Warm
+81,90,Hot
+91,1000,Very Hot

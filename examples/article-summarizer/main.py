@@ -4,8 +4,11 @@ from schema import Schema
 import newspaper
 from newspaper import Article
 
-p = promote.Promote("colin", "789asdf879h789a79f79sf79s",
-                    "https://sandbox.c.yhat.com/")
+USERNAME = "colin"
+API_KEY = "789asdf879h789a79f79sf79s"
+PROMOTE_URL = "https://sandbox.c.yhat.com/"
+
+p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 @promote.validate_json(Schema({'url': str}))
 def promoteModel(data):
@@ -25,8 +28,7 @@ TESTDATA = {"url": TESTURL}
 print(promoteModel(TESTDATA))
 
 # name and deploy our model
-# p.deploy("ArticleSummarizer", promoteModel, TESTDATA,
-        #  confirm=True, dry_run=True, verbose=0)
+# p.deploy("ArticleSummarizer", promoteModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("ArticleSummarizer", testdata)
