@@ -5,8 +5,8 @@ import newspaper
 from newspaper import Article
 
 USERNAME = "colin"
-API_KEY = "789asdf879h789a79f79sf79s"
-PROMOTE_URL = "https://sandbox.c.yhat.com/"
+API_KEY = "d580d451-06b9-4c10-a73f-523adca5f48c"
+PROMOTE_URL = "http://localhost:3000/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
@@ -28,7 +28,7 @@ TESTDATA = {"url": TESTURL}
 print(promoteModel(TESTDATA))
 
 # name and deploy our model
-# p.deploy("ArticleSummarizer", promoteModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
+p.deploy("ArticleSummarizer", promoteModel, TESTDATA, True)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("ArticleSummarizer", testdata)

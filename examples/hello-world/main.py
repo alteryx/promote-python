@@ -4,7 +4,7 @@ from schema import Schema, And
 # schema is optional
 @promote.validate_json(Schema({'name': And(str, len)}))
 def promoteModel(data):
-    return data
+    return {'response': 'Hello ' + data['name'] + '!'}
 
 USERNAME = 'austin'
 API_KEY = '9a9773e8e8946c651c86fa6c651c86fa'
@@ -16,11 +16,10 @@ p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 TESTDATA = {'name': 'austin'}
 
 # test model locally
-promoteModel(TESTDATA)
+print(promoteModel(TESTDATA))
 
 # 1. test that TESTDATA is valid json
 # 2. THERE IS test data, run promoteModel(TESTDATA) before deployment
 
-p.deploy("HelloModel1", TESTDATA, verbose=2)
+# p.deploy("HelloModel1", TESTDATA, verbose=2)
 # p.deploy("HelloModel", testdata, confirm=True, dry_run=False, verbose=0)
-
