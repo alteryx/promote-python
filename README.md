@@ -85,7 +85,7 @@ p.predict("HelloModel", {"name": "greg"})
 ```python
 import promote
 
-@promote.validate_json(Schema({'name': And(str, len)}))
+@promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
 def promoteModel(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 ```
@@ -94,7 +94,7 @@ The code above ensures that all data passed to our model must:
 
 1. Be an object, `{}`
 2. Contain the key `'name'`
-3. Contain a string
+3. Contain a string with length greater than 1 character.
 
 ### Setting the Auth
 
@@ -115,7 +115,7 @@ The `Promote` module has 2 methods:
 
 #### Deploy a model to Alteryx Promote
 
-The `deploy` function captures `promoteModel()` and deploys it to the Promote servers.
+The `deploy` function captures `promoteModel()`, any objects in the `helpers/` and `objects/` directories, the `promote.sh` file, and send them to the Promote servers.
 
 #### Usage
 

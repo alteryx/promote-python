@@ -2,13 +2,13 @@ import promote
 from schema import Schema, And
 
 # schema is optional
-@promote.validate_json(Schema({'name': And(str, len)}))
+@promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
 def promoteModel(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 
-USERNAME = 'austin'
-API_KEY = '9a9773e8e8946c651c86fa6c651c86fa'
-PROMOTE_URL = "https://sandbox.c.yhat.com/"
+USERNAME = 'colin'
+API_KEY = 'd580d451-06b9-4c10-a73f-523adca5f48c'
+PROMOTE_URL = "http://54.201.55.134:3001/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
@@ -20,6 +20,4 @@ print(promoteModel(TESTDATA))
 
 # 1. test that TESTDATA is valid json
 # 2. THERE IS test data, run promoteModel(TESTDATA) before deployment
-
-# p.deploy("HelloModel1", TESTDATA, verbose=2)
-# p.deploy("HelloModel", testdata, confirm=True, dry_run=False, verbose=0)
+p.deploy("HelloModel", TESTDATA, confirm=True, dry_run=False, verbose=0)
