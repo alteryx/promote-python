@@ -124,12 +124,12 @@ The `deploy` function captures `promoteModel()`, any objects in the `helpers/` a
 `p.deploy("HelloWorld", promoteModel, TESTDATA, confirm=False)`
 
 #### Arguments
-- `name`(_string_):  the name of the model to deploy to ScienceOps
+- `name`(_string_):  the name of the model to deploy to Alteryx Promote
 - `model`: the name of the promoteModel function
-- `testdata`(_object_): a valid data object that your model can predict on)
+- `testdata`(_object_): a valid data object that your model can predict on
 - `confirm` (_boolean_, optional): If `True`, then user will be prompted to confirm deployment
 - `dry_run` (_boolean_, optional): If `True`, tests to see that the model can be pickled; model does not deploy
-- `verbose` (_int_, optional): Integer, determines verbosity of logging during deployment.
+- `verbose` (_int_, optional): Integer between 0 and 4, determines verbosity of logging during deployment.
 
 #### Examples
 

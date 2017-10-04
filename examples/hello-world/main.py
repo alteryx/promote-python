@@ -1,7 +1,7 @@
 import promote
 from schema import Schema, And
 
-# schema is optional
+# schema is optional https://pypi.python.org/pypi/schema
 @promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
 def promoteModel(data):
     return {'response': 'Hello ' + data['name'] + '!'}
@@ -20,4 +20,4 @@ print(promoteModel(TESTDATA))
 
 # 1. test that TESTDATA is valid json
 # 2. THERE IS test data, run promoteModel(TESTDATA) before deployment
-p.deploy("HelloModel", TESTDATA, confirm=True, dry_run=False, verbose=0)
+# p.deploy("HelloModel", promoteModel, TESTDATA, True, False)
