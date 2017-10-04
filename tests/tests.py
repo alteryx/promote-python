@@ -68,12 +68,15 @@ class Tests(unittest.TestCase):
         self.assertIsNotNone(pickle.loads(obj))
 
     def testGetSourceForModel(self):
-        extracted_code = self.p._get_function_source_code()
+        def testFunction():
+            pass
+        extracted_code = self.p._get_function_source_code(testFunction)
         actual_file = os.path.join(
             os.path.dirname(__file__), 'sample-model', 'deploy_clfModel.py'
         )
         with open(actual_file, 'r') as f:
             actual_code = f.read()
+        actual_code += '\npromoteModel = testFunction\n'
 
         self.assertEqual(extracted_code, actual_code)
 

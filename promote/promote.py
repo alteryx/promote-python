@@ -52,16 +52,13 @@ class Promote(object):
             raise Exception('The path to your deployment directory does not exist: {}'.format(self.deployment_dir))
 
 
-    def _get_function_source_code(self):
+    def _get_function_source_code(self, functionToDeploy):
         source = ''
         with open(self.deployment_file, 'r') as f:
             source = f.read()
 
-        # TODO: talk to Colin about this
-        if 'def promoteModel(' not in source:
-            msg = 'Your model needs to implement the `promoteModel`'
-            msg += ' function. Function definition does not appear in {}'
-            raise Exception(msg.format(self.deployment_file))
+        source += "\npromoteModel = {}\n".format(functionToDeploy.__name__)
+
         return source
     
     def _get_objects(self):
@@ -116,7 +113,7 @@ class Promote(object):
                 ))
         return helpers
 
-    def _get_bundle(self, modelName):
+    def _get_bundle(self, functionToDeploy, modelName):
         bundle = dict(
             modelname=modelName,
             language="python",
@@ -132,7 +129,7 @@ class Promote(object):
         logging.info('deploying model using file: {}'.format(self.deployment_file))
 
         # extract source code for function
-        bundle['code'] = self._get_function_source_code()
+        bundle['code'] = self._get_function_source_code(functionToDeploy)
         # get pickles
         bundle['objects'] = self._get_objects()
         bundle['reqs'] = self._get_requirements()
@@ -151,7 +148,7 @@ class Promote(object):
         bundle = json.dumps(bundle)
         return utils.post_file(deployment_url, (self.username, self.apikey), bundle)
 
-    def deploy(self, modelName, testdata, confirm=False, dry_run=False, verbose=0):
+    def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=0):
         """
         Deploys a model to your Promote instance. If it's the first time the model is being deployed, 
         a new endpoint will be created for the model.
@@ -160,6 +157,8 @@ class Promote(object):
         ==========
         modelName: str
             Name of the model you're deploying. This will be the name of the endpoint for the model as well.
+        functionToDeploy: func
+            Function you'd like to deploy to Promote.
         testdata: dict, list
             Sample data that will be used to validate your model can successfully execute.
         confirm: bool (default: False)
@@ -172,7 +171,9 @@ class Promote(object):
 
         Examples
         ========
-        >>> p.deploy("HelloModel", testdata=testdata, confirm=True, dry_run=False, verbose=0)
+        >>> def sayHello(data):
+        ...     return "Hello " + str(data)
+        >>> p.deploy("HelloModel", sayHello, testdata=testdata, confirm=True, dry_run=False, verbose=0)
         """
         levels = {
             0: logging.WARNING,
@@ -188,7 +189,7 @@ class Promote(object):
             logging.warning('running production. deployment will not occur')
             return
 
-        bundle = self._get_bundle(modelName)
+        bundle = self._get_bundle(functionToDeploy, modelName)
 
         if confirm==True:
             self._confirm()
