@@ -13,7 +13,7 @@ ENSEMBLE = joblib.load('./objects/ensemble.pkl')
 
 # ensure that data sent to our model is only ints or floats
 @promote.validate_json(Schema([[int, float]]))
-def promoteModel(data):
+def ensembleModel(data):
     preds = ENSEMBLE.predict_proba(data).tolist()
     res = []
     for i in preds:
@@ -22,10 +22,10 @@ def promoteModel(data):
 
 
 TESTDATA = [[5.1, 3.5], [6.7, 3.1]]
-promoteModel(TESTDATA)
+ensembleModel(TESTDATA)
 
 # name and deploy our model
-p.deploy("EnsembleClassifier", promoteModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
+p.deploy("EnsembleClassifier", ensembleModel, TESTDATA, confirm=True, dry_run=True, verbose=1)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("EnsembleClassifier", TESTDATA)

@@ -138,8 +138,9 @@ class Promote(object):
         return bundle
 
     def _confirm(self):
-        response = raw_input("Are you sure you'd like to deploy this model? (y/N): ")
+        response = input("Are you sure you'd like to deploy this model? (y/N): ")
         if response.lower() != "y":
+            logging.warning("Deployment Cancelled")
             sys.exit(1)
 
     def _upload_deployment(self, bundle):

@@ -3,7 +3,7 @@ from schema import Schema, And
 
 # schema is optional https://pypi.python.org/pypi/schema
 @promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
-def promoteModel(data):
+def helloWorld(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 
 USERNAME = 'colin'
@@ -16,8 +16,8 @@ p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 TESTDATA = {'name': 'austin'}
 
 # test model locally
-print(promoteModel(TESTDATA))
+print(helloWorld(TESTDATA))
 
 # 1. test that TESTDATA is valid json
-# 2. THERE IS test data, run promoteModel(TESTDATA) before deployment
-# p.deploy("HelloModel", promoteModel, TESTDATA, True, False)
+# 2. THERE IS test data, run helloWorld(TESTDATA) before deployment
+p.deploy("HelloModel", helloWorld, TESTDATA, confirm=True, dry_run=True, verbose=1)
