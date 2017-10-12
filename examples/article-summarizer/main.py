@@ -11,7 +11,7 @@ PROMOTE_URL = "http://localhost:3000/"
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 @promote.validate_json(Schema({'url': str}))
-def promoteModel(data):
+def ArticleSummarizer(data):
     # print(weights)
     art = Article(url=data['url'], language='en')
     art.download()
@@ -25,10 +25,10 @@ TESTURL = "https://new.surfline.com/surf-news/santa-cruz-surf-character-catches-
 TESTDATA = {"url": TESTURL}
 
 # test the model locally
-print(promoteModel(TESTDATA))
+print(ArticleSummarizer(TESTDATA))
 
 # name and deploy our model
-p.deploy("ArticleSummarizer", promoteModel, TESTDATA, True)
+p.deploy("ArticleSummarizer", ArticleSummarizer, TESTDATA, confirm=True, dry_run=True)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("ArticleSummarizer", testdata)

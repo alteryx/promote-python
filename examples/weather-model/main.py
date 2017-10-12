@@ -15,7 +15,7 @@ p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 # validate that we only process data that has ints and floats
 @promote.validate_json(Schema({'lat': str, 'lon': str}))
-def promoteModel(data):
+def weatherModel(data):
     lat = data.get('lat')
     lon = data.get('lon')
     temp = get_weather.request_weather(DARKSKY_API_KEY, lat, lon)
@@ -24,10 +24,10 @@ def promoteModel(data):
 
 # some test data
 TESTDATA = {'lat':'37', 'lon':'-122'}
-print(promoteModel(TESTDATA))
+print(weatherModel(TESTDATA))
 
 # name and deploy our model
-# p.deploy("UserDBLookup", promoteModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
+# p.deploy("UserDBLookup", weatherModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("UserDBLookup", TESTDATA)
