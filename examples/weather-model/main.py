@@ -19,6 +19,7 @@ def weatherModel(data):
     lat = data.get('lat')
     lon = data.get('lon')
     temp = get_weather.request_weather(DARKSKY_API_KEY, lat, lon)
+    print('temp', temp)
     desc = tempdesc.lookup(temp)
     return {"tempature": temp, "feels": desc}
 
@@ -27,7 +28,7 @@ TESTDATA = {'lat':'37', 'lon':'-122'}
 print(weatherModel(TESTDATA))
 
 # name and deploy our model
-# p.deploy("UserDBLookup", weatherModel, TESTDATA, confirm=True, dry_run=True, verbose=0)
+p.deploy("WeatherModel", weatherModel, TESTDATA, confirm=True, dry_run=True)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("UserDBLookup", TESTDATA)

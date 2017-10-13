@@ -5,6 +5,7 @@ import os
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoderMonitor, MultipartEncoder
 import sys
+import logging
 
 
 def zlib_compress(data, to):
@@ -19,6 +20,7 @@ def zlib_compress(data, to):
 def post_file(url, auth, json_string):
     f = tempfile.NamedTemporaryFile(mode='wb', prefix='tmp_promote_', delete=False)
     zlib_compress(json_string, f)
+    logging.info('compressed bundle size: %s', sizeof_fmt(os.path.getsize(f.name)))
     f.close()
 
     files = {
@@ -51,3 +53,10 @@ def post_file(url, auth, json_string):
         pass
 
     return rsp
+
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)

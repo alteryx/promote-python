@@ -43,6 +43,8 @@ class Promote(object):
         self.apikey = apikey
         self.url = url
 
+        self.addedfiles = []
+
         self.deployment_file = os.path.realpath(sys.argv[0])
         if not os.path.exists(self.deployment_file):
             raise Exception('The path to your deployment file does not exist: {}'.format(self.deployment_file))
@@ -69,7 +71,9 @@ class Promote(object):
         
         objects = {}
         for f in os.listdir(objects_dir):
-            with open(os.path.join(objects_dir, f), 'rb') as fh:
+            file = os.path.join(objects_dir, f)
+            self.addedfiles.append(f)
+            with open(file, 'rb') as fh:
                 obj = fh.read()
                 obj = base64.encodebytes(obj).decode('utf-8')
                 objects[f] = obj
@@ -98,6 +102,7 @@ class Promote(object):
             dict(name='__init__.py', parent_dir='helpers', source='')
         ]
         for filename in os.listdir(helpers_dir):
+            self.addedfiles.append(filename)
             helper_file = os.path.join(helpers_dir, filename)
 
             if not os.path.isfile(helper_file) or helper_file.endswith('.pyc'):
@@ -149,7 +154,7 @@ class Promote(object):
         bundle = json.dumps(bundle)
         return utils.post_file(deployment_url, (self.username, self.apikey), bundle)
 
-    def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=0):
+    def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1):
         """
         Deploys a model to your Promote instance. If it's the first time the model is being deployed, 
         a new endpoint will be created for the model.
@@ -192,15 +197,20 @@ class Promote(object):
 
         bundle = self._get_bundle(functionToDeploy, modelName)
 
-        if confirm==True:
+        if confirm == True:
             self._confirm()
-        
-        logging.debug(bundle)
-        if dry_run==True:
+
+        # logging.debug(bundle)
+        logging.info('Deploying with the following files:')
+        for f in self.addedfiles:
+            logging.info(f)
+
+        if dry_run == True:
+            logging.warning('dry_run=True, not deploying model')
             return bundle
 
         response = self._upload_deployment(bundle)
-        
+
         # TODO: maybe not return the raw response (?)
         return response
     
