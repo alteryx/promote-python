@@ -6,6 +6,7 @@ import logging
 import json
 import pprint as pp
 import urllib
+import re
 
 from . import utils
 
@@ -193,6 +194,10 @@ class Promote(object):
 
         if os.environ.get('PROMOTE_PRODUCTION'):
             logging.warning('running production. deployment will not occur')
+            return
+        
+        if re.match("^[A-Za-z0-9]+$", modelName) == None:
+            logging.warning("Model name can only contain following characters: A-Za-z0-9")
             return
 
         bundle = self._get_bundle(functionToDeploy, modelName)
