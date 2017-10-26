@@ -19,7 +19,6 @@ def weatherModel(data):
     lat = data.get('lat')
     lon = data.get('lon')
     temp = get_weather.request_weather(DARKSKY_API_KEY, lat, lon)
-    print('temp', temp)
     desc = tempdesc.lookup(temp)
     return {"tempature": temp, "feels": desc}
 
