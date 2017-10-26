@@ -117,6 +117,15 @@ class Tests(unittest.TestCase):
         except Exception as ex:
             self.assertIsNotNone(ex)
 
+    def testModelName(self):
+        try:
+            testdata = { 'name': 'Alteryx' }
+            def test_function(data):
+                return data
+
+            self.p.deploy("MyF$%^&Model", test_function, testdata, confirm=False)
+        except Exception as ex:
+            self.assertIsNotNone(ex)
         
 if __name__ == '__main__':
     unittest.main()
