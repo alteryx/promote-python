@@ -103,7 +103,7 @@ class Tests(unittest.TestCase):
         def test_function(data):
             return data
 
-        testdata = { 'name': 'Alteryx' }
+        testdata = {'name': 'Alteryx'}
         self.assertEqual(testdata, test_function(testdata))
 
     def testJsonValidatorInvalidJSON(self):
@@ -111,7 +111,7 @@ class Tests(unittest.TestCase):
         def test_function(data):
             return data
 
-        testdata = { 'name': True }
+        testdata = {'name': True}
         try:
            test_function(testdata)
         except Exception as ex:
