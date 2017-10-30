@@ -11,7 +11,7 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'promote', 'v
         name="promote",
         version=__version__,
         author="Alteryx",
-        author_email="dev@yhathq.com",
+        author_email="promotedev@alteryx.com",
         url="https://github.com/alteryx/promote-python-client",
         packages=find_packages(),
         description="Client for deploying Python models to Promote.",

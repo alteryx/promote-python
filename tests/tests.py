@@ -103,7 +103,7 @@ class Tests(unittest.TestCase):
         def test_function(data):
             return data
 
-        testdata = { 'name': 'Alteryx' }
+        testdata = {'name': 'Alteryx'}
         self.assertEqual(testdata, test_function(testdata))
 
     def testJsonValidatorInvalidJSON(self):
@@ -111,12 +111,21 @@ class Tests(unittest.TestCase):
         def test_function(data):
             return data
 
-        testdata = { 'name': True }
+        testdata = {'name': True}
         try:
            test_function(testdata)
         except Exception as ex:
             self.assertIsNotNone(ex)
 
+    def testModelName(self):
+        try:
+            testdata = { 'name': 'Alteryx' }
+            def test_function(data):
+                return data
+
+            self.p.deploy("MyF$%^&Model", test_function, testdata, confirm=False)
+        except Exception as ex:
+            self.assertIsNotNone(ex)
         
 if __name__ == '__main__':
     unittest.main()
