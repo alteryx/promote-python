@@ -93,6 +93,16 @@ class Promote(object):
                 raise Exception("You don't have Promote listed as a requirement. It's impossible to deploy a model without it")
         return requirements
 
+    def _get_promotesh(self):
+        promotesh_file = os.path.join(self.deployment_dir, 'promote.sh')
+        if not os.path.exists(promotesh_file):
+            logging.info('no promote.sh file found in {}'.format(promotesh_file))
+            return {}
+
+        with open(promotesh_file, 'r') as f:
+            promote_file_obj = f.read()
+        return promote_file_obj
+
     def _get_helper_modules(self):
         helpers_dir = os.path.join(self.deployment_dir, 'helpers')
         if not os.path.exists(helpers_dir):
@@ -130,6 +140,7 @@ class Promote(object):
             modules=[],
             image=None, # do we need this anymore?,
             reqs="",
+            promotesh="",
         )
 
         logging.info('deploying model using file: {}'.format(self.deployment_file))
@@ -139,6 +150,7 @@ class Promote(object):
         # get pickles
         bundle['objects'] = self._get_objects()
         bundle['reqs'] = self._get_requirements()
+        bundle['promotesh'] = self._get_promotesh()
         bundle['modules'] = self._get_helper_modules()
 
         return bundle
@@ -198,6 +210,10 @@ class Promote(object):
         
         if re.match("^[A-Za-z0-9]+$", modelName) == None:
             logging.warning("Model name can only contain following characters: A-Za-z0-9")
+            return
+
+        if len(modelName) > 35:
+            logging.warning("Model name must be fewer than 35 characters")
             return
 
         bundle = self._get_bundle(functionToDeploy, modelName)

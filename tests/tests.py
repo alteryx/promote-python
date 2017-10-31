@@ -45,6 +45,9 @@ class Tests(unittest.TestCase):
 
     def testReadRequirementsFile(self):
         self.assertEqual(3, len(self.p._get_requirements().split('\n')))
+    
+    def testReadPromoteshFile(self):
+        self.assertEqual(1, len(self.p._get_promotesh().split('\n')))
 
     def testMissingRequirementsFile(self):
         self.p.deployment_dir = '/non-existant-directory'
@@ -124,6 +127,16 @@ class Tests(unittest.TestCase):
                 return data
 
             self.p.deploy("MyF$%^&Model", test_function, testdata, confirm=False)
+        except Exception as ex:
+            self.assertIsNotNone(ex)
+
+    def testModelNameLength(self):
+        try:
+            testdata = { 'name': 'Alteryx' }
+            def test_function(data):
+                return data
+
+            self.p.deploy("Modelsupersupersupersupersuperlongmodelname", test_function, testdata, confirm=False)
         except Exception as ex:
             self.assertIsNotNone(ex)
         
