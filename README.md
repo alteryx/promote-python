@@ -5,14 +5,20 @@ Python library for deploying models built using Python to Alteryx Promote.
 ```
 pip install promote
 ```
-### Examples
+### Example Models
 
-[Hello World](examples/hello-world)
-[Article Summarizer](examples/article-summarizer)
-[DB Lookup](examples/db-lookup)
-[Ensemble Model](examples/ensemble-model)
-[Iris Classifier](examples/iris-classifier)
-[Weather Model](examples/weather-model)
+[Hello World](examples/hello-world) - a very simple model
+
+[Iris Classifier](examples/iris-classifier) - use a Support Vector Classifier to predict flower types.
+
+[Article Summarizer](examples/article-summarizer) - send a url with a news article and get a summary.
+
+[DB Lookup](examples/db-lookup) - lookup a value in a database
+
+[Ensemble Model](examples/ensemble-model) - build and deploy an ensemble model.
+
+[Weather Model](examples/weather-model) - send Lat/Lon data and get real-time weather data and classify temperature.
+
 
 ### Project Overview
 
