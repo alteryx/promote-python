@@ -5,6 +5,14 @@ Python library for deploying models built using Python to Alteryx Promote.
 ```
 pip install promote
 ```
+### Examples
+
+[Hello World](examples/hello-world)
+[Article Summarizer](examples/article-summarizer)
+[DB Lookup](examples/db-lookup)
+[Ensemble Model](examples/ensemble-model)
+[Iris Classifier](examples/iris-classifier)
+[Weather Model](examples/weather-model)
 
 ### Project Overview
 
@@ -42,17 +50,13 @@ Before beginning building a model, be sure to import the `promote` package:
 ### The `promoteModel()` function
 
 The `promoteModel` function is used to define the API endpoint for a model and is executed each time a model is called.  **This is the core of the API endpoint**
+
 ```python
 # import the promote package and define our model function
 import promote
 
-def promoteModel(data):
+def helloWorld(data):
     return {'response': 'Hello ' + data['name'] + '!'}
-
-# execute locally with test data
-TESTDATA = {'name': 'Colin'}
-promoteModel(TESTDATA)
-# {'response': 'Hello Colin!'}
 
 # specify the username, apikey and url, and then deploy
 USERNAME = 'your_username'
@@ -60,7 +64,14 @@ API_KEY = 'your_apikey'
 PROMOTE_URL = "https://promote.yourcompany.com"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
-p.deploy("HelloModel", TESTDATA, verbose=2)
+
+# execute locally with test data
+TESTDATA = {'name': 'Colin'}
+HelloModel(TESTDATA)
+# {'response': 'Hello Colin!'}
+
+
+p.deploy("HelloModel", helloWorld, TESTDATA, confirm=True, dry_run=False, verbose=1)
 
 # Send a request to the model
 p.predict("HelloModel", {"name": "greg"})
@@ -86,7 +97,7 @@ p.predict("HelloModel", {"name": "greg"})
 import promote
 
 @promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
-def promoteModel(data):
+def helloModel(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 ```
 
@@ -121,7 +132,7 @@ The `deploy` function captures `promoteModel()`, any objects in the `helpers/` a
 
 `Promote.deploy(name, model, testdata, confirm=False, dry_run=False, verbose=0)`
 
-`p.deploy("HelloWorld", promoteModel, TESTDATA, confirm=False)`
+`p.deploy("HelloWorld", helloModel, TESTDATA, confirm=False)`
 
 #### Arguments
 - `name`(_string_):  the name of the model to deploy to Alteryx Promote
@@ -135,11 +146,11 @@ The `deploy` function captures `promoteModel()`, any objects in the `helpers/` a
 
 Deploy the "LPOptimizer_model" and don't require confirmation on deployment.
 ```python
-p.deploy("LPOptimizer_model", promoteModel, TESTDATA, confirm=False)
+p.deploy("LPOptimizer_model", LPModel, TESTDATA, confirm=False)
 ```
 Below, `dry_run=True` builds the model, prints the dependencies but does not deploy the model.
 ```python
-p.deploy("LPOptimizer_model", promoteModel, TESTDATA, dry_run=True)
+p.deploy("LPOptimizer_model", LPModel, TESTDATA, dry_run=True)
 ```
 <hr>
 
