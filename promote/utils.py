@@ -1,5 +1,6 @@
 import zlib
 import tempfile
+import tarfile
 import json
 import os
 import requests
@@ -7,6 +8,17 @@ from requests_toolbelt.multipart.encoder import MultipartEncoderMonitor, Multipa
 import sys
 import logging
 
+
+def tar_directory_to_string(dirname):
+    tmp = tempfile.NamedTemporaryFile('wb', prefix='tmp_promote_')
+    f = open(tmp.name, 'wb')
+    with tarfile.open(mode="w:gz", fileobj=f) as tar:
+        tar.add(dirname, arcname=os.path.basename(dirname))
+    f.close()
+    archive = open(tmp.name, 'rb').read().decode("utf-8")
+    print(archive)
+    tmp.close()
+    return archive
 
 def zlib_compress(data, to):
     step = 4 << 20  # 4MiB
