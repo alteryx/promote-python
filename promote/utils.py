@@ -25,6 +25,10 @@ def tar_directory_to_string(dirname):
     return encoded_tarball
 
 def untar_string_to_directory(base64tarstring, dest='/objects'):
+    "
+    We likely won't actually use this, but it's handy to have a reference 
+    implementation.
+    "
     f = io.BytesIO(base64.b64decode(base64tarstring))
     tar = tarfile.open(mode="r:gz", fileobj=f)
     tar.extractall(path=dest)
