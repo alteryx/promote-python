@@ -77,8 +77,6 @@ class Promote(object):
                 self.addedfiles.append(path)
                 object_key = "{}.tar.gz".format(path)
                 tarball = utils.tar_directory_to_string(fullpath)
-                tarball = tarball.decode('utf-8')
-                print(tarball)
                 objects[object_key] = tarball
             else:
                 self.addedfiles.append(path)

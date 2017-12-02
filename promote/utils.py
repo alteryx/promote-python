@@ -1,5 +1,6 @@
 import zlib
 import tempfile
+import base64
 import tarfile
 import json
 import os
@@ -15,10 +16,13 @@ def tar_directory_to_string(dirname):
     with tarfile.open(mode="w:gz", fileobj=f) as tar:
         tar.add(dirname, arcname=os.path.basename(dirname))
     f.close()
-    archive = open(tmp.name, 'rb').read().decode("utf-8")
-    print(archive)
+
+    encoded_tarball = ''
+    with open(tmp.name, 'rb') as tarball:
+        encoded_tarball = base64.b64encode(tarball.read())
+        encoded_tarball = encoded_tarball.decode('utf-8')
     tmp.close()
-    return archive
+    return encoded_tarball
 
 def zlib_compress(data, to):
     step = 4 << 20  # 4MiB
