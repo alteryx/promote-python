@@ -24,6 +24,11 @@ def tar_directory_to_string(dirname):
     tmp.close()
     return encoded_tarball
 
+def untar_string_to_directory(base64tarstring, dest='/objects'):
+    f = io.BytesIO(base64.b64decode(base64tarstring))
+    tar = tarfile.open(mode="r:gz", fileobj=f)
+    tar.extractall(path=dest)
+
 def zlib_compress(data, to):
     step = 4 << 20  # 4MiB
     c = zlib.compressobj()
