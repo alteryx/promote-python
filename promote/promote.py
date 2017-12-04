@@ -14,7 +14,7 @@ from . import utils
 class Promote(object):
     """
     Promote allows you to interact with the Promote API.
-    
+
     Parameters
     ==========
     username: str
@@ -136,8 +136,6 @@ class Promote(object):
 
         # extract source code for function
         bundle['code'] = self._get_function_source_code(functionToDeploy)
-        # get pickles
-        bundle['objects'] = self._get_objects()
         bundle['reqs'] = self._get_requirements()
         bundle['modules'] = self._get_helper_modules()
 
@@ -149,11 +147,10 @@ class Promote(object):
             logging.warning("Deployment Cancelled")
             sys.exit(1)
 
-    def _upload_deployment(self, bundle):
-        # TODO: correct this
+    def _upload_deployment(self, bundle, modelObjects):
         deployment_url = urllib.parse.urljoin(self.url, '/api/deploy/python')
-        bundle = json.dumps(bundle)
-        return utils.post_file(deployment_url, (self.username, self.apikey), bundle)
+        modelObjects = json.dumps(modelObjects)
+        return utils.post_file(deployment_url, (self.username, self.apikey), bundle, modelObjects)
 
     def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1):
         """
@@ -195,12 +192,13 @@ class Promote(object):
         if os.environ.get('PROMOTE_PRODUCTION'):
             logging.warning('running production. deployment will not occur')
             return
-        
+
         if re.match("^[A-Za-z0-9]+$", modelName) == None:
             logging.warning("Model name can only contain following characters: A-Za-z0-9")
             return
 
         bundle = self._get_bundle(functionToDeploy, modelName)
+        modelObjects = self._get_objects()
 
         if confirm == True:
             self._confirm()
@@ -214,11 +212,10 @@ class Promote(object):
             logging.warning('dry_run=True, not deploying model')
             return bundle
 
-        response = self._upload_deployment(bundle)
+        response = self._upload_deployment(bundle, modelObjects)
 
-        # TODO: maybe not return the raw response (?)
         return response
-    
+
     def predict(self, modelName, data, username=None):
         """
         Makes a prediction using the model's endpoint on your Promote server. 
@@ -241,7 +238,7 @@ class Promote(object):
         # uses billybob's HelloWorld 
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
         """
-        # TODO: correct this
+
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'model', modelName))
         username = username if username else self.username
 
@@ -255,4 +252,3 @@ class Promote(object):
             auth=(self.username, self.apikey)
         )
         return response.json()
-    

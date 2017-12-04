@@ -17,20 +17,21 @@ def zlib_compress(data, to):
 
     to.write(c.flush())
 
-def post_file(url, auth, json_string):
-    f = tempfile.NamedTemporaryFile(mode='wb', prefix='tmp_promote_', delete=False)
-    zlib_compress(json_string, f)
-    logging.info('compressed bundle size: %s', sizeof_fmt(os.path.getsize(f.name)))
-    f.close()
+def post_file(url, auth, bundle, modelObjects):
+    modelObjectsFile = tempfile.NamedTemporaryFile(mode='wb', prefix='tmp_promote_', delete=False)
+    zlib_compress(modelObjects, modelObjectsFile)
+    size = sizeof_fmt(os.path.getsize(modelObjectsFile.name))
+    logging.info('compressed bundle size: %s', size)
+    modelObjectsFile.close()
 
     files = {
-        'bundle': open(f.name, 'rb')
+        'model_objects': open(modelObjectsFile.name, 'rb')
     }
 
+    print(files)
+    print(bundle)
     try:
-        # TODO: could do this?
-        # r = requests.post(url=url, files=files, auth=auth, params={'language': 'python' })
-        r = requests.post(url=url, files=files, auth=auth)
+        r = requests.post(url=url, files=files, auth=auth, data=bundle)
         if r.status_code != 200:
             r.raise_for_status()
     except requests.exceptions.HTTPError as err:
@@ -44,11 +45,12 @@ def post_file(url, auth, json_string):
     except Exception as err:
         sys.stderr.write("\nDeployment error: " + str(err))
         return {"status": "error", "message": str(err)}
+
     rsp = r.text
     # clean up after we're done
-    f.close()
+    modelObjectsFile.close()
     try:
-        os.unlink(f.name)
+        os.unlink(modelObjectsFile.name)
     except:
         pass
 
