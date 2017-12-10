@@ -242,7 +242,7 @@ class Promote(object):
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
         """
         # TODO: correct this
-        prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'model', modelName))
+        prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'models', modelName, 'predict'))
         username = username if username else self.username
 
         headers = {
@@ -251,7 +251,7 @@ class Promote(object):
         response = requests.post(
             url=prediction_url,
             headers=headers,
-            data=data,
+            json=data,
             auth=(self.username, self.apikey)
         )
         return response.json()
