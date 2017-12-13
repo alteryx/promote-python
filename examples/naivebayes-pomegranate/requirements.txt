@@ -1,0 +1,5 @@
+promote
+schema==0.6.5
+pomegranate
+scikit-learn
+numpy
