@@ -7,7 +7,7 @@ def helloWorld(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 
 USERNAME = 'ross'
-API_KEY = '2dcf2d39-0d4a-4d4b-b79d-7b7033e0532f'
+API_KEY = 'your_api_key'
 PROMOTE_URL = "http://promote.x.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
