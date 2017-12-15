@@ -1,11 +1,4 @@
 import promote
-from schema import Schema, And
-
-# schema is optional https://pypi.python.org/pypi/schema
-# @promote.validate_json(Schema({'name': And(str, lambda s: len(s) > 1)}))
-# def helloWorld(data):
-#     return {'response': 'Hello ' + data['name'] + '!'}
-
 
 def helloWorldVec(data):
     return [

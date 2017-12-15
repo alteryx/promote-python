@@ -1,12 +1,16 @@
-## Hello World
+## Hello World Vectorized
 ### Overview
+
+This model shows how to process multiple rows of data in a single request.  It is based on the "Hello World" model.
+
+### Example 
 
 This model accepts:
 
 ```
 [
-    {"id": 1, "name": "your_name"}, 
-    {"id": 2, "name": "your_friends_name"}
+    {"id": 1, "name": "Colin"}, 
+    {"id": 2, "name": "Ross"}
 ]
 ```
 
@@ -14,8 +18,8 @@ and returns:
 
 ```
 [
-    {'greeting': 'Hello your_name!', 'id': 1},
-    {'greeting': 'Hello your_friends_name!', 'id': 2}
+    {'id': 1, 'greeting': 'Hello Colin!'}, 
+    {'id': 2, 'greeting': 'Hello Ross!'}
 ]
 ```
 
