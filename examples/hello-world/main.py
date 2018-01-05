@@ -6,9 +6,9 @@ from schema import Schema, And
 def helloWorld(data):
     return {'response': 'Hello ' + data['name'] + '!'}
 
-USERNAME = 'colin'
-API_KEY = 'd580d451-06b9-4c10-a73f-523adca5f48c'
-PROMOTE_URL = "http://54.201.55.134:3001/"
+USERNAME = 'ross'
+API_KEY = 'your_api_key'
+PROMOTE_URL = "http://promote.x.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
@@ -20,4 +20,4 @@ print(helloWorld(TESTDATA))
 
 # 1. test that TESTDATA is valid json
 # 2. THERE IS test data, run helloWorld(TESTDATA) before deployment
-p.deploy("HelloModel", helloWorld, TESTDATA, confirm=True, dry_run=True, verbose=1)
+p.deploy("HelloModel", helloWorld, TESTDATA, confirm=True, dry_run=False, verbose=1)

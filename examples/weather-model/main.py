@@ -7,7 +7,7 @@ from helpers import get_weather
 
 # instanciate the Promote class with our API information
 USERNAME = "colin"
-API_KEY = "789asdf879h789a79f79sf79s"
+API_KEY = "your_api_key"
 PROMOTE_URL = "https://sandbox.c.yhat.com/"
 DARKSKY_API_KEY = os.environ['DARKSKY_API_KEY'] # get a darksky api key: https://darksky.net/dev
 
