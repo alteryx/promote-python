@@ -74,13 +74,19 @@ class Promote(object):
             return {}
 
         objects = {}
-        for f in os.listdir(objects_dir):
-            file = os.path.join(objects_dir, f)
-            self.addedfiles.append(f)
-            with open(file, 'rb') as fh:
-                obj = fh.read()
-                obj = base64.encodebytes(obj).decode('utf-8')
-                objects[f] = obj
+        for path in os.listdir(objects_dir):
+            fullpath = os.path.join(objects_dir, path)
+            if os.path.isdir(fullpath):
+                self.addedfiles.append(path)
+                object_key = "{}.tar.gz".format(path)
+                tarball = utils.tar_directory_to_string(fullpath)
+                objects[object_key] = tarball
+            else:
+                self.addedfiles.append(path)
+                with open(fullpath, 'rb') as fh:
+                    obj = fh.read()
+                    obj = base64.encodebytes(obj).decode('utf-8')
+                    objects[path] = obj
 
         return objects
 

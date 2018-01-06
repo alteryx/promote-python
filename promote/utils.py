@@ -1,5 +1,7 @@
 import zlib
 import tempfile
+import base64
+import tarfile
 import json
 import os
 import requests
@@ -7,6 +9,29 @@ from requests_toolbelt.multipart.encoder import MultipartEncoderMonitor, Multipa
 import sys
 import logging
 
+
+def tar_directory_to_string(dirname):
+    tmp = tempfile.NamedTemporaryFile('wb', prefix='tmp_promote_')
+    f = open(tmp.name, 'wb')
+    with tarfile.open(mode="w:gz", fileobj=f) as tar:
+        tar.add(dirname, arcname=os.path.basename(dirname))
+    f.close()
+
+    encoded_tarball = ''
+    with open(tmp.name, 'rb') as tarball:
+        encoded_tarball = base64.b64encode(tarball.read())
+        encoded_tarball = encoded_tarball.decode('utf-8')
+    tmp.close()
+    return encoded_tarball
+
+def untar_string_to_directory(base64tarstring, dest='/objects'):
+    "
+    We likely won't actually use this, but it's handy to have a reference 
+    implementation.
+    "
+    f = io.BytesIO(base64.b64decode(base64tarstring))
+    tar = tarfile.open(mode="r:gz", fileobj=f)
+    tar.extractall(path=dest)
 
 def zlib_compress(data, to):
     step = 4 << 20  # 4MiB

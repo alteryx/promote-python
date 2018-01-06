@@ -24,7 +24,8 @@ TESTDATA = [[5.1, 3.5, 1.4, 0.2], [6.7, 3.1, 5.6, 2.4]]
 print(irisClassifier(TESTDATA))
 
 # name and deploy our model
-p.deploy("IrisClassifier", irisClassifier, TESTDATA, confirm=True, dry_run=True, verbose=2)
+bundle = p.deploy("IrisClassifier", irisClassifier, TESTDATA, confirm=True, dry_run=True, verbose=2)
+print(bundle)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("IrisClassifier", TESTDATA)
