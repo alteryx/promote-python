@@ -28,7 +28,7 @@ def post_file(url, auth, bundle, modelObjectsPath):
     # zlib_compress(modelObjects, modelObjectsFile)
     modelObjectsFile = open(modelObjectsPath, 'rb')
     size = sizeof_fmt(os.path.getsize(modelObjectsPath))
-    logging.info('compressed bundle size: %s', size)
+    logging.info('compressed model objects size: %s', size)
 
     files = {
         'model_objects': modelObjectsFile

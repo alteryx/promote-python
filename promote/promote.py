@@ -7,6 +7,8 @@ import json
 import pprint as pp
 import urllib
 import re
+import tempfile
+import tarfile
 
 from . import utils
 
@@ -68,25 +70,44 @@ class Promote(object):
         objects_dir = os.path.join(self.deployment_dir, 'objects')
         if not os.path.exists(objects_dir):
             logging.info('no pickles directory found in {}'.format(objects_dir))
-            return {}
-        
-        objects = {}
-        for f in os.listdir(objects_dir):
-            file = os.path.join(objects_dir, f)
-            self.addedfiles.append(f)
-            with open(file, 'rb') as fh:
-                obj = fh.read()
-                obj = base64.encodebytes(obj).decode('utf-8')
-                objects[f] = obj
+            return {}, ''
 
-        return objects
+        tarName = objects_dir + '/objects.tar.gz'
+        if os.path.exists(tarName):
+            os.unlink(tarName)
+
+        objects = {}
+        for path in os.listdir(objects_dir):
+            fullpath = os.path.join(objects_dir, path)
+            if os.path.isdir(fullpath):
+                self.addedfiles.append(path)
+                # object_key = "{}.tar.gz".format(path)
+                # tarball = utils.tar_directory_to_string(fullpath)
+                objects[path] = path
+            else:
+                self.addedfiles.append(path)
+                objects[path] = path
+                # with open(fullpath, 'rb') as fh:
+                    # obj = fh.read()
+                    # obj = base64.encodebytes(obj).decode('utf-8')
+
+        # tmp = tempfile.NamedTemporaryFile('wb', prefix='tmp_promote_')
+        # tarName = objects_dir + '/objects.tar.gz'
+
+        tarFile = open(tarName, 'wb')
+        with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
+            tar.add(objects_dir, arcname='objects')
+        tarFile.close()
+
+        return objects, tarName
+        # return objects
 
     def _get_requirements(self):
         requirements_file = os.path.join(self.deployment_dir, 'requirements.txt')
         if not os.path.exists(requirements_file):
             logging.info('no requirements file found in {}'.format(requirements_file))
             raise Exception("You don't have a requirements.txt file. It's impossible to deploy a model without it")
-        
+
         with open(requirements_file, 'r') as f:
             requirements = f.read()
             if "promote" not in requirements:
@@ -147,10 +168,9 @@ class Promote(object):
             logging.warning("Deployment Cancelled")
             sys.exit(1)
 
-    def _upload_deployment(self, bundle, modelObjects):
+    def _upload_deployment(self, bundle, modelObjectsPath):
         deployment_url = urllib.parse.urljoin(self.url, '/api/deploy/python')
-        modelObjects = json.dumps(modelObjects)
-        return utils.post_file(deployment_url, (self.username, self.apikey), bundle, modelObjects)
+        return utils.post_file(deployment_url, (self.username, self.apikey), bundle, modelObjectsPath)
 
     def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1):
         """
@@ -190,7 +210,6 @@ class Promote(object):
         )
 
         if os.environ.get('PROMOTE_PRODUCTION'):
-            logging.warning('running production. deployment will not occur')
             return
 
         if re.match("^[A-Za-z0-9]+$", modelName) == None:
@@ -198,12 +217,12 @@ class Promote(object):
             return
 
         bundle = self._get_bundle(functionToDeploy, modelName)
-        modelObjects = self._get_objects()
+        modelObjects, tarfilePath = self._get_objects()
+        bundle['objects'] = modelObjects
 
         if confirm == True:
             self._confirm()
 
-        # logging.debug(bundle)
         logging.info('Deploying with the following files:')
         for f in self.addedfiles:
             logging.info(f)
@@ -212,7 +231,7 @@ class Promote(object):
             logging.warning('dry_run=True, not deploying model')
             return bundle
 
-        response = self._upload_deployment(bundle, modelObjects)
+        response = self._upload_deployment(bundle, tarfilePath)
 
         return response
 
