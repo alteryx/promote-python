@@ -17,19 +17,23 @@ def zlib_compress(data, to):
 
     to.write(c.flush())
 
-def post_file(url, auth, bundle, modelObjects):
-    modelObjectsFile = tempfile.NamedTemporaryFile(mode='wb', prefix='tmp_promote_', delete=False)
-    zlib_compress(modelObjects, modelObjectsFile)
-    size = sizeof_fmt(os.path.getsize(modelObjectsFile.name))
+def post_file(url, auth, bundle, modelObjectsPath):
+
+    if modelObjectsPath == '':
+        modelObjectsFile = tempfile.NamedTemporaryFile(
+            mode='wb', prefix='tmp_promote_', delete=False)
+        modelObjectsPath = modelObjectsFile.name
+        modelObjectsFile.close()
+    
+    # zlib_compress(modelObjects, modelObjectsFile)
+    modelObjectsFile = open(modelObjectsPath, 'rb')
+    size = sizeof_fmt(os.path.getsize(modelObjectsPath))
     logging.info('compressed bundle size: %s', size)
-    modelObjectsFile.close()
 
     files = {
-        'model_objects': open(modelObjectsFile.name, 'rb')
+        'model_objects': modelObjectsFile
     }
 
-    print(files)
-    print(bundle)
     try:
         r = requests.post(url=url, files=files, auth=auth, data=bundle)
         if r.status_code != 200:
@@ -38,23 +42,27 @@ def post_file(url, auth, bundle, modelObjects):
         if r.status_code > 200:
             responseText = r.text
             sys.stderr.write("\nDeployment error: " + responseText)
+            cleanupFile(modelObjectsFile)
             return {"status": "error", "message": responseText}
         else:
             sys.stderr.write("\nError in HTTP connection")
+            cleanupFile(modelObjectsFile)
             return {"status": "error", "message": "Error in HTTP connection."}
     except Exception as err:
         sys.stderr.write("\nDeployment error: " + str(err))
+        cleanupFile(modelObjectsFile)
         return {"status": "error", "message": str(err)}
 
+    cleanupFile(modelObjectsFile)
     rsp = r.text
-    # clean up after we're done
-    modelObjectsFile.close()
+    return rsp
+
+def cleanupFile(file):
     try:
-        os.unlink(modelObjectsFile.name)
+        file.close()
+        os.unlink(file.name)
     except:
         pass
-
-    return rsp
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
