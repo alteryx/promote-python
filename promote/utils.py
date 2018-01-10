@@ -19,12 +19,6 @@ def zlib_compress(data, to):
 
 def post_file(url, auth, bundle, modelObjectsPath):
 
-    if modelObjectsPath == '':
-        modelObjectsFile = tempfile.NamedTemporaryFile(
-            mode='wb', prefix='tmp_promote_', delete=False)
-        modelObjectsPath = modelObjectsFile.name
-        modelObjectsFile.close()
-    
     # zlib_compress(modelObjects, modelObjectsFile)
     modelObjectsFile = open(modelObjectsPath, 'rb')
     size = sizeof_fmt(os.path.getsize(modelObjectsPath))

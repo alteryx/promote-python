@@ -68,11 +68,18 @@ class Promote(object):
     
     def _get_objects(self):
         objects_dir = os.path.join(self.deployment_dir, 'objects')
+
         if not os.path.exists(objects_dir):
             logging.info('no pickles directory found in {}'.format(objects_dir))
-            return {}, ''
+            # We still need to ship up a tar, so make an empty one
+            tarName = os.path.join(self.deployment_dir, 'objects.tar.gz')
+            tarFile = open(tarName, 'wb')
+            with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
+                pass
+            tarFile.close()
+            return {}, tarName
 
-        tarName = objects_dir + '/objects.tar.gz'
+        tarName = os.path.join(objects_dir, 'objects.tar.gz')
         if os.path.exists(tarName):
             os.unlink(tarName)
 
@@ -91,16 +98,12 @@ class Promote(object):
                     # obj = fh.read()
                     # obj = base64.encodebytes(obj).decode('utf-8')
 
-        # tmp = tempfile.NamedTemporaryFile('wb', prefix='tmp_promote_')
-        # tarName = objects_dir + '/objects.tar.gz'
-
         tarFile = open(tarName, 'wb')
         with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
             tar.add(objects_dir, arcname='objects')
         tarFile.close()
 
         return objects, tarName
-        # return objects
 
     def _get_requirements(self):
         requirements_file = os.path.join(self.deployment_dir, 'requirements.txt')
