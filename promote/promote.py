@@ -32,6 +32,7 @@ class Promote(object):
     >>> p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=False, verbose=0)
     >>> p.predict("HelloWorld", { "name": "Colin" })
     """
+
     def __init__(self, username, apikey, url):
         if username is None:
             raise Exception("Specify a username")
@@ -50,12 +51,13 @@ class Promote(object):
 
         self.deployment_file = os.path.realpath(sys.argv[0])
         if not os.path.exists(self.deployment_file):
-            raise Exception('The path to your deployment file does not exist: {}'.format(self.deployment_file))
+            raise Exception('The path to your deployment file does not exist: {}'.format(
+                self.deployment_file))
 
         self.deployment_dir = os.path.dirname(self.deployment_file)
         if not os.path.exists(self.deployment_dir):
-            raise Exception('The path to your deployment directory does not exist: {}'.format(self.deployment_dir))
-
+            raise Exception('The path to your deployment directory does not exist: {}'.format(
+                self.deployment_dir))
 
     def _get_function_source_code(self, functionToDeploy):
         source = ''
@@ -65,7 +67,7 @@ class Promote(object):
         source += "\npromoteModel = {}\n".format(functionToDeploy.__name__)
 
         return source
-    
+
     def _get_objects(self):
         objects_dir = os.path.join(self.deployment_dir, 'objects')
 
@@ -106,21 +108,26 @@ class Promote(object):
         return objects, tarName
 
     def _get_requirements(self):
-        requirements_file = os.path.join(self.deployment_dir, 'requirements.txt')
+        requirements_file = os.path.join(
+            self.deployment_dir, 'requirements.txt')
         if not os.path.exists(requirements_file):
-            logging.info('no requirements file found in {}'.format(requirements_file))
-            raise Exception("You don't have a requirements.txt file. It's impossible to deploy a model without it")
+            logging.info(
+                'no requirements file found in {}'.format(requirements_file))
+            raise Exception(
+                "You don't have a requirements.txt file. It's impossible to deploy a model without it")
 
         with open(requirements_file, 'r') as f:
             requirements = f.read()
             if "promote" not in requirements:
-                raise Exception("You don't have Promote listed as a requirement. It's impossible to deploy a model without it")
+                raise Exception(
+                    "You don't have Promote listed as a requirement. It's impossible to deploy a model without it")
         return requirements
 
     def _get_helper_modules(self):
         helpers_dir = os.path.join(self.deployment_dir, 'helpers')
         if not os.path.exists(helpers_dir):
-            logging.info('helpers directory does not exist: {}'.format(helpers_dir))
+            logging.info(
+                'helpers directory does not exist: {}'.format(helpers_dir))
             return []
 
         helpers = [
@@ -152,11 +159,12 @@ class Promote(object):
             code=None,
             objects={},
             modules=[],
-            image=None, # do we need this anymore?,
+            image=None,  # do we need this anymore?,
             reqs="",
         )
 
-        logging.info('deploying model using file: {}'.format(self.deployment_file))
+        logging.info('deploying model using file: {}'.format(
+            self.deployment_file))
 
         # extract source code for function
         bundle['code'] = self._get_function_source_code(functionToDeploy)
@@ -166,7 +174,8 @@ class Promote(object):
         return bundle
 
     def _confirm(self):
-        response = input("Are you sure you'd like to deploy this model? (y/N): ")
+        response = input(
+            "Are you sure you'd like to deploy this model? (y/N): ")
         if response.lower() != "y":
             logging.warning("Deployment Cancelled")
             sys.exit(1)
@@ -216,7 +225,8 @@ class Promote(object):
             return
 
         if re.match("^[A-Za-z0-9]+$", modelName) == None:
-            logging.warning("Model name can only contain following characters: A-Za-z0-9")
+            logging.warning(
+                "Model name can only contain following characters: A-Za-z0-9")
             return
 
         bundle = self._get_bundle(functionToDeploy, modelName)
@@ -261,7 +271,8 @@ class Promote(object):
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
         """
 
-        prediction_url = urllib.parse.urljoin(self.url, os.path.join(self.username, 'model', modelName))
+        prediction_url = urllib.parse.urljoin(self.url, os.path.join(
+            self.username, 'models', modelName, 'predict'))
         username = username if username else self.username
 
         headers = {
@@ -270,7 +281,7 @@ class Promote(object):
         response = requests.post(
             url=prediction_url,
             headers=headers,
-            data=data,
+            json=data,
             auth=(self.username, self.apikey)
         )
         return response.json()
