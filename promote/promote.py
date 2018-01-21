@@ -73,7 +73,7 @@ class Promote(object):
 
         if not os.path.exists(objects_dir):
             logging.info('no pickles directory found in {}'.format(objects_dir))
-            # We still need to ship up a tar, so make an empty one
+            # Create an empty tarfile if there is no objects directory
             tarName = os.path.join(self.deployment_dir, 'objects.tar.gz')
             tarFile = open(tarName, 'wb')
             with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
@@ -90,15 +90,10 @@ class Promote(object):
             fullpath = os.path.join(objects_dir, path)
             if os.path.isdir(fullpath):
                 self.addedfiles.append(path)
-                # object_key = "{}.tar.gz".format(path)
-                # tarball = utils.tar_directory_to_string(fullpath)
                 objects[path] = path
             else:
                 self.addedfiles.append(path)
                 objects[path] = path
-                # with open(fullpath, 'rb') as fh:
-                    # obj = fh.read()
-                    # obj = base64.encodebytes(obj).decode('utf-8')
 
         tarFile = open(tarName, 'wb')
         with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
@@ -152,15 +147,14 @@ class Promote(object):
 
     def _get_bundle(self, functionToDeploy, modelName):
         bundle = dict(
-            modelname=modelName,
-            language="python",
-            username=self.username,
-            # below are the things we need to grab
-            code=None,
-            objects={},
-            modules=[],
-            image=None,  # do we need this anymore?,
-            reqs="",
+            modelname = modelName,
+            language = "python",
+            username = self.username,
+            code = None,
+            objects = {},
+            modules = [],
+            image = None,
+            reqs = "",
         )
 
         logging.info('deploying model using file: {}'.format(
@@ -270,7 +264,6 @@ class Promote(object):
         # uses billybob's HelloWorld 
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
         """
-
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(
             self.username, 'models', modelName, 'predict'))
         username = username if username else self.username
