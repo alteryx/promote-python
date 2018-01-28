@@ -17,42 +17,46 @@ def zlib_compress(data, to):
 
     to.write(c.flush())
 
-def post_file(url, auth, json_string):
-    f = tempfile.NamedTemporaryFile(mode='wb', prefix='tmp_promote_', delete=False)
-    zlib_compress(json_string, f)
-    logging.info('compressed bundle size: %s', sizeof_fmt(os.path.getsize(f.name)))
-    f.close()
+def post_file(url, auth, bundle, modelObjectsPath):
+
+    # zlib_compress(modelObjects, modelObjectsFile)
+    modelObjectsFile = open(modelObjectsPath, 'rb')
+    size = sizeof_fmt(os.path.getsize(modelObjectsPath))
+    logging.info('compressed model objects size: %s', size)
 
     files = {
-        'bundle': open(f.name, 'rb')
+        'model_objects': modelObjectsFile
     }
 
     try:
-        # TODO: could do this?
-        # r = requests.post(url=url, files=files, auth=auth, params={'language': 'python' })
-        r = requests.post(url=url, files=files, auth=auth)
+        r = requests.post(url=url, files=files, auth=auth, data=bundle)
         if r.status_code != 200:
             r.raise_for_status()
     except requests.exceptions.HTTPError as err:
         if r.status_code > 200:
             responseText = r.text
             sys.stderr.write("\nDeployment error: " + responseText)
+            cleanupFile(modelObjectsFile)
             return {"status": "error", "message": responseText}
         else:
             sys.stderr.write("\nError in HTTP connection")
+            cleanupFile(modelObjectsFile)
             return {"status": "error", "message": "Error in HTTP connection."}
     except Exception as err:
         sys.stderr.write("\nDeployment error: " + str(err))
+        cleanupFile(modelObjectsFile)
         return {"status": "error", "message": str(err)}
+
+    cleanupFile(modelObjectsFile)
     rsp = r.text
-    # clean up after we're done
-    f.close()
+    return rsp
+
+def cleanupFile(file):
     try:
-        os.unlink(f.name)
+        file.close()
+        os.unlink(file.name)
     except:
         pass
-
-    return rsp
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
