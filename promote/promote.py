@@ -143,7 +143,7 @@ class Promote(object):
                     parent_dir='helpers',
                     source=source
                 ))
-        return helpers
+        return json.dumps(helpers)
 
     def _get_bundle(self, functionToDeploy, modelName):
         bundle = dict(
