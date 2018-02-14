@@ -16,7 +16,7 @@ def helloh2o(data):
 
 USERNAME = 'ross'
 API_KEY = 'your_api_key'
-PROMOTE_URL = "http://promote.x.yhat.com/"
+PROMOTE_URL = "https://promote.c.yhat.com/"
 
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)

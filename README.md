@@ -9,6 +9,8 @@ pip install promote
 
 [Hello World](examples/hello-world) - a very simple model
 
+[Hello Vectorized](examples/hello-vectorized) - a vectorized version of the 'Hello World' model
+
 [Iris Classifier](examples/iris-classifier) - use a Support Vector Classifier to predict flower types.
 
 [Article Summarizer](examples/article-summarizer) - send a url with a news article and get a summary.
@@ -16,6 +18,8 @@ pip install promote
 [DB Lookup](examples/db-lookup) - lookup a value in a database
 
 [Ensemble Model](examples/ensemble-model) - build and deploy an ensemble model.
+
+[Naivebayes Pomegranate](examples/naivebayes-pomegranate) - an Naive Bayes model using the pomegranate packages
 
 [Weather Model](examples/weather-model) - send Lat/Lon data and get real-time weather data and classify temperature.
 

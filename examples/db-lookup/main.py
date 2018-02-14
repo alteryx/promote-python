@@ -6,7 +6,7 @@ from helpers import dbconn
 # instanciate the Promote class with our API information
 USERNAME = "colin"
 API_KEY = "your_api_key"
-PROMOTE_URL = "https://sandbox.c.yhat.com/"
+PROMOTE_URL = "https://promote.c.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 

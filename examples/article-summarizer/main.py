@@ -6,7 +6,7 @@ from newspaper import Article
 
 USERNAME = "colin"
 API_KEY = "your_api_key"
-PROMOTE_URL = "http://localhost:3000/"
+PROMOTE_URL = "http://promote.c.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
