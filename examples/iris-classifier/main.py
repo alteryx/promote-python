@@ -7,9 +7,9 @@ from sklearn.externals import joblib
 WEIGHTS = joblib.load('./objects/model_weights.pkl')
 
 # instanciate the Promote class with our API information
-USERNAME = "colin"
-API_KEY = "your_api_key"
-PROMOTE_URL = "https://sandbox.c.yhat.com/"
+USERNAME = "USERNAME"
+API_KEY = "APIKEY"
+PROMOTE_URL = "https://promote.c.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
@@ -24,7 +24,7 @@ TESTDATA = [[5.1, 3.5, 1.4, 0.2], [6.7, 3.1, 5.6, 2.4]]
 print(irisClassifier(TESTDATA))
 
 # name and deploy our model
-p.deploy("IrisClassifier", irisClassifier, TESTDATA, confirm=True, dry_run=True, verbose=2)
+p.deploy("IrisClassifier", irisClassifier, TESTDATA, confirm=True, dry_run=False, verbose=2)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("IrisClassifier", TESTDATA)
