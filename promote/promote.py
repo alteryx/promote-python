@@ -61,7 +61,7 @@ class Promote(object):
 
     def _get_function_source_code(self, functionToDeploy):
         source = ''
-        with open(self.deployment_file, 'r') as f:
+        with open(self.deployment_file, 'r', encoding='utf-8') as f:
             source = f.read()
 
         source += "\npromoteModel = {}\n".format(functionToDeploy.__name__)
@@ -95,7 +95,7 @@ class Promote(object):
                 self.addedfiles.append(path)
                 objects[path] = path
 
-        tarFile = open(tarName, 'wb')
+        tarFile = open(tarName, 'wb', encoding='utf-8')
         with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
             tar.add(objects_dir, arcname='objects')
         tarFile.close()
@@ -111,7 +111,7 @@ class Promote(object):
             raise Exception(
                 "You don't have a requirements.txt file. It's impossible to deploy a model without it")
 
-        with open(requirements_file, 'r') as f:
+        with open(requirements_file, 'r', encoding='utf-8') as f:
             requirements = f.read()
             if "promote" not in requirements:
                 raise Exception(
@@ -239,6 +239,8 @@ class Promote(object):
             return bundle
 
         response = self._upload_deployment(bundle, tarfilePath)
+        
+        logging.debug(json.dumps(bundle))
 
         return response
 
