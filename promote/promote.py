@@ -177,7 +177,6 @@ class Promote(object):
         bundle['reqs'] = self._get_requirements()
         bundle['promotesh'] = self._get_promotesh()
         bundle['modules'] = self._get_helper_modules()
-        bundles['promotesh'] = self._get_promotesh()
 
         return bundle
 
