@@ -146,7 +146,7 @@ class Promote(object):
                 continue
 
             with open(helper_file, 'rb') as fh:
-                logging.info('appending file {}'.format(filename))
+                logging.info('appendingit@githubg file {}'.format(filename))
                 source = fh.read().decode('utf-8')
                 helpers.append(dict(
                     name=filename,
@@ -157,7 +157,6 @@ class Promote(object):
 
     def _get_bundle(self, functionToDeploy, modelName):
         bundle = dict(
-<<<<<<< HEAD
             modelname=modelName,
             language="python",
             username=self.username,
@@ -168,16 +167,6 @@ class Promote(object):
             image=None, # do we need this anymore?,
             reqs="",
             promotesh="",
-=======
-            modelname = modelName,
-            language = "python",
-            username = self.username,
-            code = None,
-            objects = {},
-            modules = [],
-            image = None,
-            reqs = "",
->>>>>>> 41a00c4b028b64fca255b5021e5093e87b9a8b39
         )
 
         logging.info('deploying model using file: {}'.format(
@@ -188,6 +177,7 @@ class Promote(object):
         bundle['reqs'] = self._get_requirements()
         bundle['promotesh'] = self._get_promotesh()
         bundle['modules'] = self._get_helper_modules()
+        bundles['promotesh'] = self._get_promotesh()
 
         return bundle
 
