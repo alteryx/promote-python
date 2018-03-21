@@ -119,8 +119,7 @@ class Promote(object):
         return requirements
 
     def _get_promotesh(self):
-        promotesh_file = os.path.join(self.deployment_dir, 'promote.sh')
-        if not os.path.exists(promotesh_file):
+        if not os.path.exists(global.promotesh):
             logging.info('no promote.sh file found in {}'.format(promotesh_file))
             return {}
 
