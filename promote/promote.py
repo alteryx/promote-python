@@ -53,7 +53,6 @@ class Promote(object):
         if not os.path.exists(self.deployment_file):
             raise Exception('The path to your deployment file does not exist: {}'.format(
                 self.deployment_file))
-
         self.deployment_dir = os.path.dirname(self.deployment_file)
         if not os.path.exists(self.deployment_dir):
             raise Exception('The path to your deployment directory does not exist: {}'.format(
@@ -119,7 +118,8 @@ class Promote(object):
         return requirements
 
     def _get_promotesh(self):
-        if not os.path.exists(global.promotesh):
+        promotesh_file = os.path.join(self.deployment_dir, 'promote.sh')
+        if not os.path.exists(promotesh_file):
             logging.info('no promote.sh file found in {}'.format(promotesh_file))
             return {}
 
