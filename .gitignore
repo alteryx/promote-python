@@ -3,7 +3,7 @@ venv
 # C extensions
 *.so
 .DS_Store
-.howtorelease.txt
+howtorelease.txt
 
 # Packages
 *.egg
