@@ -150,6 +150,25 @@ class Tests(unittest.TestCase):
             self.p.deploy("Modelsupersupersupersupersuperlongmodelname", test_function, testdata, confirm=False)
         except Exception as ex:
             self.assertIsNotNone(ex)
+
+    def testModelMetadata(self):
+        try:
+            self.p.metadata.one = 1
+            self.p.metadata.two = 2
+            self.p.metadata['three'] = "three"
+            self.p.metadata['comment'] = "this is a rather lengthy comment, talking about the merits of this model"
+            self.p.metadata.array = [0, 1, 2]
+            print(self.p.metadata)
+            self.assertEqual(self.p.metadata, 
+                {
+                    "one": 1,
+                    "two": 2,
+                    "three": "three",
+                    "comment": "this is a rather lengthy comment, talking about the merits of this model",
+                    'array': [0, 1, 2]
+                })
+        except Exception as ex:
+            self.assertIsNotNone(ex)
         
 if __name__ == '__main__':
     unittest.main()

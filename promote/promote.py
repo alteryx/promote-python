@@ -11,7 +11,7 @@ import tempfile
 import tarfile
 
 from . import utils
-
+from .metadata import Metadata
 
 class Promote(object):
     """
@@ -49,6 +49,8 @@ class Promote(object):
 
         self.addedfiles = []
 
+        self.metadata = Metadata()
+
         self.deployment_file = os.path.realpath(sys.argv[0])
         if not os.path.exists(self.deployment_file):
             raise Exception('The path to your deployment file does not exist: {}'.format(
@@ -69,6 +71,10 @@ class Promote(object):
 
     def _get_objects(self):
         objects_dir = os.path.join(self.deployment_dir, 'objects')
+
+        if not os.path.exists(self.deployment_dir):
+            raise Exception('The path to your deployment directory does not exist: {}'.format(
+                self.deployment_dir))
 
         if not os.path.exists(objects_dir):
             logging.info('no pickles directory found in {}'.format(objects_dir))
@@ -164,7 +170,8 @@ class Promote(object):
             modules = [],
             image = None,
             reqs = "",
-            promotesh = ""
+            promotesh = "",
+            metadata = {}
         )
 
         logging.info('deploying model using file: {}'.format(
@@ -241,6 +248,7 @@ class Promote(object):
         bundle = self._get_bundle(functionToDeploy, modelName)
         modelObjects, tarfilePath = self._get_objects()
         bundle['objects'] = modelObjects
+        bundle['metadata'] = self.metadata
 
         if confirm == True:
             self._confirm()
