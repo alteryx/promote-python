@@ -16,7 +16,8 @@ class Tests(unittest.TestCase):
     
     def testInitSetsDeploymentFileCorrectly(self):
         self.assertEqual(self.p.deployment_file,
-                         'tests/sample-model/deploy_clfModel.py')
+                         os.path.join(os.path.dirname(__file__),
+                                      'sample-model', 'deploy_clfModel.py'))
     
     def testInvalidDeploymentFile(self):
         originalArgv = copy.copy(sys.argv)
@@ -30,7 +31,7 @@ class Tests(unittest.TestCase):
 
     def testInitSetsDeploymentDirCorrectly(self):
         self.assertEqual(self.p.deployment_dir,
-                         'tests/sample-model')
+                         os.path.dirname(self.p.deployment_file))
     
     def testInvalidDeploymentDir(self):
         # TODO: this is just a subset of testInvalidDeploymentFile. it's a stupid test.
@@ -59,16 +60,26 @@ class Tests(unittest.TestCase):
 
     def testGetObjectsMissingPickleDir(self):
         self.p.deployment_dir = '/non-existant-directory'
-        self.assertEqual({}, self.p._get_objects())
+        try:
+            self.p._get_objects()
+            raise Exception("shouldn't get here")
+        except Exception as ex:
+            self.assertIsNotNone(ex)
 
     def testGetObjects(self):
         self.assertEqual(2, len(self.p._get_objects()))
+
+    def testGetObjectsObjects(self):
+        objects, tarName = self.p._get_objects()
+        self.assertEqual(2, len(objects))
     
-    def testGetObjectsAreSerializeable(self):
-        objects = self.p._get_objects()
-        value = objects['rng.pkl']
-        obj = base64.decodebytes(bytes(value, 'utf-8'))
-        self.assertIsNotNone(pickle.loads(obj))
+    def testGetObjectsReturnsObjects(self):
+        (objects, tarName) = self.p._get_objects()
+        self.assertIsNotNone(objects['rng.pkl'])
+
+    def testGetObjectsReturnsTarname(self):
+        (objects, tarName) = self.p._get_objects()
+        self.assertIsNotNone(tarName)
 
     def testGetSourceForModel(self):
         def testFunction():
