@@ -62,7 +62,7 @@ class Promote(object):
 
     def _get_function_source_code(self, functionToDeploy):
         source = ''
-        with open(self.deployment_file, 'r') as f:
+        with open(self.deployment_file, 'r', encoding='utf-8') as f:
             source = f.read()
 
         source += "\npromoteModel = {}\n".format(functionToDeploy.__name__)
