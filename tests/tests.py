@@ -157,15 +157,16 @@ class Tests(unittest.TestCase):
             self.p.metadata.two = 2
             self.p.metadata['three'] = "three"
             self.p.metadata['comment'] = "this is a rather lengthy comment, talking about the merits of this model"
-            self.p.metadata.array = [0, 1, 2]
-            print(self.p.metadata)
+            self.p.metadata.array = [0, 1, 'two']
+            self.p.metadata.dict = {'a': 1, 'b': 'two'}
             self.assertEqual(self.p.metadata, 
                 {
                     "one": 1,
                     "two": 2,
                     "three": "three",
                     "comment": "this is a rather lengthy comment, talking about the merits of this model",
-                    'array': [0, 1, 2]
+                    'array': [0, 1, 'two'],
+                    'dict': {'a': 1, 'b': 'two'}
                 })
         except Exception as ex:
             self.assertIsNotNone(ex)
