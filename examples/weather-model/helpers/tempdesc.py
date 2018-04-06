@@ -1,5 +1,4 @@
 import pandas as pd
-import path
 
 data = pd.read_csv('./helpers/datatable.csv')
 
