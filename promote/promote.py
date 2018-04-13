@@ -50,7 +50,6 @@ class Promote(object):
         self.addedfiles = []
 
         self.metadata = Metadata()
-
         self.deployment_file = os.path.realpath(sys.argv[0])
         if not os.path.exists(self.deployment_file):
             raise Exception('The path to your deployment file does not exist: {}'.format(
@@ -198,7 +197,7 @@ class Promote(object):
 
     def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1):
         """
-        Deploys a model to your Promote instance. If it's the first time the model is being deployed, 
+        Deploys a model to your Promote instance. If it's the first time the model is being deployed,
         a new endpoint will be created for the model.
 
         Parameters
@@ -210,7 +209,7 @@ class Promote(object):
         testdata: dict, list
             Sample data that will be used to validate your model can successfully execute.
         confirm: bool (default: False)
-            If True, deployment will pause before uploading to the server and validate that you actually want 
+            If True, deployment will pause before uploading to the server and validate that you actually want
             to deploy.
         dry_run: bool (default: False)
             If True, deployment will exit prior to uploading to the server and will instead return the bundle.
@@ -233,6 +232,7 @@ class Promote(object):
             level=levels.get(verbose, logging.WARNING)
         )
 
+        print("DEPLOYING...")
         if os.environ.get('PROMOTE_PRODUCTION'):
             return
 
@@ -249,7 +249,6 @@ class Promote(object):
         modelObjects, tarfilePath = self._get_objects()
         bundle['objects'] = modelObjects
         bundle['metadata'] = self.metadata
-
         if confirm == True:
             self._confirm()
 
@@ -267,7 +266,7 @@ class Promote(object):
 
     def predict(self, modelName, data, username=None):
         """
-        Makes a prediction using the model's endpoint on your Promote server. 
+        Makes a prediction using the model's endpoint on your Promote server.
         You can query a different user's model by passing a username.
 
         Parameters
@@ -284,8 +283,8 @@ class Promote(object):
         ========
         >>> p = Promote("tom", "4b48cfdecd0841c1b85a806d3add5b11", "https://my-promote.mycompany.com/")
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" })
-        # uses billybob's HelloWorld 
-        >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob") 
+        # uses billybob's HelloWorld
+        >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob")
         """
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(
             self.username, 'models', modelName, 'predict'))

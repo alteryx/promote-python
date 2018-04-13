@@ -14,10 +14,12 @@ class Map(dict):
             if isinstance(arg, dict):
                 for k, v in arg.items():
                     self[k] = v
+                    print("%v is now %v" % (k, v))
 
         if kwargs:
             for k, v in kwargs.items():
                 self[k] = v
+                print("found kwargs: %s is now %s" % (k, v))
 
     def __getattr__(self, attr):
         return self.get(attr)
