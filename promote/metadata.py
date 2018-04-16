@@ -14,12 +14,10 @@ class Map(dict):
             if isinstance(arg, dict):
                 for k, v in arg.items():
                     self[k] = v
-                    print("%v is now %v" % (k, v))
 
         if kwargs:
             for k, v in kwargs.items():
                 self[k] = v
-                print("found kwargs: %s is now %s" % (k, v))
 
     def __getattr__(self, attr):
         return self.get(attr)
@@ -45,6 +43,8 @@ class Metadata(Map):
     """
     def __setitem__(self, key, value):
         try:
+            if len(self) == 6:
+                raise Exception('Attempted to deploy with {} metadata items. Max allowed is 6.'.format(len(self)+1))
             json.dumps(key)
             json.dumps(value)
         except Exception as e:

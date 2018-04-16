@@ -232,7 +232,6 @@ class Promote(object):
             level=levels.get(verbose, logging.WARNING)
         )
 
-        print("DEPLOYING...")
         if os.environ.get('PROMOTE_PRODUCTION'):
             return
 
@@ -248,7 +247,10 @@ class Promote(object):
         bundle = self._get_bundle(functionToDeploy, modelName)
         modelObjects, tarfilePath = self._get_objects()
         bundle['objects'] = modelObjects
-        bundle['metadata'] = self.metadata
+        if len(self.metadata) > 6:
+            raise Exception('Attempted to deploy with {} metadata items. Max allowed is 6.'.format(len(bundle['metadata'])))
+        bundle['metadata'] = json.dumps(self.metadata)
+
         if confirm == True:
             self._confirm()
 
