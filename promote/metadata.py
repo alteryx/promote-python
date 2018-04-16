@@ -43,8 +43,13 @@ class Metadata(Map):
     """
     def __setitem__(self, key, value):
         try:
+            err_msg = ""
             if len(self) == 6:
-                raise Exception('Attempted to deploy with {} metadata items. Max allowed is 6.'.format(len(self)+1))
+                raise Exception('Metadata items limit exceeded. Max allowed is 6.')
+            elif len(key) > 20:
+                raise Exception('Maximum metadata key characters of 20 exceeded. Your key has {} characters'.format(len(key)))
+            elif len(json.dumps(value)) > 50:
+                raise Exception('Maximum metadata value characters of 50 exceeded. Your value has {} characters'.format(len(json.dumps(value))))
             json.dumps(key)
             json.dumps(value)
         except Exception as e:
