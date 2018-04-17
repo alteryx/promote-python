@@ -43,7 +43,6 @@ class Metadata(Map):
     """
     def __setitem__(self, key, value):
         try:
-            err_msg = ""
             if len(self) == 6:
                 raise Exception('Metadata items limit exceeded. Max allowed is 6.')
             elif len(key) > 20:
