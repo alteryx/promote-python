@@ -155,8 +155,8 @@ class Tests(unittest.TestCase):
         try:
             self.p.metadata.one = 1
             self.p.metadata.two = 2
-            self.p.metadata['three'] = "three"
-            self.p.metadata['comment'] = "this is a rather lengthy comment, talking about the merits of this model"
+            self.p.metadata['three'] = 'three'
+            self.p.metadata['comment'] = 'this is a rather lengthy comment'
             self.p.metadata.array = [0, 1, 'two']
             self.p.metadata.dict = {'a': 1, 'b': 'two'}
             self.assertEqual(self.p.metadata, 
@@ -164,12 +164,38 @@ class Tests(unittest.TestCase):
                     "one": 1,
                     "two": 2,
                     "three": "three",
-                    "comment": "this is a rather lengthy comment, talking about the merits of this model",
+                    "comment": "this is a rather lengthy comment",
                     'array': [0, 1, 'two'],
                     'dict': {'a': 1, 'b': 'two'}
                 })
         except Exception as ex:
-            self.assertIsNotNone(ex)
-        
+            self.assertIsNone(ex)
+
+    def testModelMetaDataSixLimit(self):
+        try:
+            self.p.metadata.a = 1
+            self.p.metadata.b = 2
+            self.p.metadata.c = 3
+            self.p.metadata.d = 4
+            self.p.metadata.e = 5
+            self.p.metadata.f = 6
+            self.p.metadata.g = 7
+        except Exception as ex:
+            self.assertEqual(str(ex), 'Metadata items limit exceeded. Max allowed is 6.')
+
+    def testModelMetaDataKeyLengthLimit(self):
+        try:
+            self.p.metadata['thiskeyislongerthan20characters'] = 1
+        except Exception as ex:
+            self.assertEqual(
+                str(ex), 'Maximum metadata key characters of 20 exceeded. Your key has 31 characters')
+
+    def testModelMetaDataValueLengthLimit(self):
+        try:
+            self.p.metadata['key'] = 'this is a very long value, in fact it is too long'
+        except Exception as ex:
+            self.assertEqual(
+                str(ex), 'Maximum metadata value characters of 50 exceeded. Your value has 51 characters')
+
 if __name__ == '__main__':
     unittest.main()
