@@ -186,6 +186,7 @@ Send data to a model via REST API request from R for a prediction.
 p.predict("LPOptimizer_model", {"activities": ["sleep", "work", "leisure"], "required_hours": [7, 10, 0], "happiness_per_hour": [1.5, 1, 2]})
 ```
 <hr>
+
 ### `Promote.metadata()`
 
 Store custom metadata about a model as part of the `PromoteModel()` when it is sent to the Promote servers. (limited to 6 key-value pairs)
