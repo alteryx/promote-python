@@ -11,7 +11,7 @@ h2o-classifier/
 ├── deploy.py
 ├── iris.csv
 ├── objects
-│   └── DRF_model_python_1512530312673_3
+│   └── DRF_model_python_1524085511585_1
 ├── requirements.txt
 └── train.py
 ```
@@ -24,7 +24,7 @@ In a terminal shell run:
 $ pip install requirements.txt
 
 # next, train the model
-$ pyhton train.py
+$ python train.py
 
 # finally, deploy the model
 $ python main.py

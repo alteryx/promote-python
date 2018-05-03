@@ -80,6 +80,10 @@ TESTDATA = {'name': 'Colin'}
 HelloModel(TESTDATA)
 # {'response': 'Hello Colin!'}
 
+# add model metadata to help organize your models
+p.metadata.punctuation = "!"
+p.metadata["greeting"] = "Hello"
+p.metadata['required_fields'] = ["name"]
 
 p.deploy("HelloModel", helloWorld, TESTDATA, confirm=True, dry_run=False, verbose=1)
 
@@ -127,10 +131,11 @@ p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 ### `Promote`
 
-The `Promote` module has 2 methods:
+The `Promote` module has 3 methods:
 
 - [`Promote.deploy`](#promotedeploy)
 - [`Promote.predict`](#promotepredict)
+- [`Promote.metadata`](#promotemetadata)
 
 ### `Promote.deploy`
 
@@ -180,3 +185,25 @@ Send data to a model via REST API request from R for a prediction.
 ```python
 p.predict("LPOptimizer_model", {"activities": ["sleep", "work", "leisure"], "required_hours": [7, 10, 0], "happiness_per_hour": [1.5, 1, 2]})
 ```
+<hr>
+
+### `Promote.metadata()`
+
+Store custom metadata about a model as part of the `PromoteModel()` when it is sent to the Promote servers. (limited to 6 key-value pairs)
+
+#### Usage
+
+`Promote.metadata[name] = value`
+
+#### Arguments
+- `name`(_string_): the name of your metadata (limit 20 characters)
+- `value`: a value for your metadata (limit 50 characters)
+
+#### Examples
+
+```python
+p.metadata.one = 1
+p.metadata["two"] = 2
+p.metadata['three'] = "this is the third item"
+p.metadata.array = [0, 1, 'two']
+p.metadata.dict = {'a': 1, 'b': 'two'}```

@@ -11,6 +11,10 @@ p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 from sklearn.externals import joblib
 ENSEMBLE = joblib.load('./objects/ensemble.pkl')
 
+# add metadata
+p.metadata["voting"] = ENSEMBLE.voting
+p.metadata["weights"] = dict(zip([e[0] for e in ENSEMBLE.estimators],ENSEMBLE.weights))
+
 # ensure that data sent to our model is only ints or floats
 @promote.validate_json(Schema([[int, float]]))
 def ensembleModel(data):

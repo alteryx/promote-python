@@ -23,6 +23,10 @@ def irisClassifier(data):
 TESTDATA = [[5.1, 3.5, 1.4, 0.2], [6.7, 3.1, 5.6, 2.4]]
 print(irisClassifier(TESTDATA))
 
+# add metadata
+p.metadata.n_neighbors = WEIGHTS.n_neighbors
+p.metadata["leaf_size"] = WEIGHTS.leaf_size
+
 # name and deploy our model
 p.deploy("IrisClassifier", irisClassifier, TESTDATA, confirm=True, dry_run=False, verbose=2)
 
