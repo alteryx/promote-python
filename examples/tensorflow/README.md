@@ -8,7 +8,7 @@ This model uses Tensorflow to traing an image classifier on the MNIST handdrawn 
 tensorflow/
 ├── README.md
 ├── objects
-│   ├── image.png
+│   └── image.png
 ├── cnn_mnist.py
 ├── main.py
 └── requirements.txt
