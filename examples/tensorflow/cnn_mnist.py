@@ -85,7 +85,7 @@ def main(unused_argv):
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="C:/Users/dcooperberg/Alteryx/promote-python/examples/tensorflow/objects/mnist_convnet_model2")
+        model_fn=cnn_model_fn, model_dir="C:/Users/dcooperberg/Alteryx/promote-python/examples/tensorflow/objects/mnist_convnet_model")
 
     # Set up logging for predictions
     tensors_to_log = {"probabilities": "softmax_tensor"}

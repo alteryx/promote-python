@@ -9,7 +9,7 @@ import operator
 
 USERNAME = "[USERNAME]"
 API_KEY = "[API_KEY]"
-PROMOTE_URL = "[PROMTOE_URL]"
+PROMOTE_URL = "[PROMOTE_URL]"
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 
@@ -77,7 +77,7 @@ def cnn_model_fn(features, labels, mode):
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 mnist_classifier = tf.estimator.Estimator(
-    model_fn=cnn_model_fn, model_dir="./objects/mnist_convnet_model2")
+    model_fn=cnn_model_fn, model_dir="./objects/mnist_convnet_model")
 
 STANDARD_SIZE = (28,28)
 def tensorflow_model(data):
