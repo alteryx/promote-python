@@ -4,7 +4,7 @@
 This model uses Tensorflow to traing an image classifier on the MNIST handdrawn numbers dataset
 
 **Project structure:**
-
+```
 tensorflow/
 ├── README.md
 ├── objects
@@ -12,6 +12,7 @@ tensorflow/
 ├── cnn_mnist.py
 ├── main.py
 └── requirements.txt
+```
 
 ### Instructions
 
