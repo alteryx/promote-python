@@ -173,7 +173,7 @@ The deploy function captures the model function, any objects in the `helpers` an
 
 **Example**
 ```python
-p.deploy("MyFirstModel", modelFunction, testdata, confirm=False, dry_run=False, verbose=0)
+p.deploy("MyFirstPythonModel", modelFunction, testdata, confirm=False, dry_run=False, verbose=0)
 ```
 <hr>
 
@@ -187,7 +187,7 @@ The `Promote.predict()` method sends data to a deployed model via REST API reque
 
 **Example**
 ```python
-p.predict("MyFirstModel", json.loads(testdata), username=None)
+p.predict("MyFirstPythonModel", json.loads(testdata), username=None)
 ```
 <hr>
 
