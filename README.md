@@ -50,9 +50,9 @@ example-model/
 
 - [`promote.sh`](#promotesh): this file is executed before your model is built. It can be used to install low-level system packages such as Linux packages
 
-- [`helpers` directory](#helpers): use this directory to store helper scripts that can be imported by the main deployment script. This is helpful for keeping you deployment script code clean.
+- [`helpers`](#helpers): use this directory to store helper scripts that can be imported by the main deployment script. This is helpful for keeping you deployment script code clean.
 
-- [`objects` directory](#objects): use this directory to store model, data, and other artifacts that must be loaded into memory when the model is deployed
+- [`objects`](#objects): use this directory to store model, data, and other artifacts that must be loaded into memory when the model is deployed
 <hr>
 
 ### `deploy.py`
