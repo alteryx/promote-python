@@ -1,5 +1,5 @@
 # Alteryx Promote Python Client
-Package for deploying models built using Python to Alteryx Promote
+Library for deploying models built using Python to Alteryx Promote
 
 ## Examples
 [Hello World](examples/hello-world) - a very simple model
@@ -14,18 +14,18 @@ Package for deploying models built using Python to Alteryx Promote
 
 [Ensemble Model](examples/ensemble-model) - build and deploy an ensemble model.
 
-[Naivebayes Pomegranate](examples/naivebayes-pomegranate) - an Naive Bayes model using the pomegranate packages
+[Naivebayes Pomegranate](examples/naivebayes-pomegranate) - an Naive Bayes model using the pomegranate library
 
 [Weather Model](examples/weather-model) - send Lat/Lon data and get real-time weather data and classify temperature.
 
 ## Installation
 ### Client
-To install the promote package, execute the following code from a terminal session.
+To install the promote library, execute the following code from a terminal session.
 ```shell
 pip install promote
 ```
 
-Please refer to the [promote-r-client](https://github.com/alteryx/promote-r-client) package for instructions on installing the R Client.
+Please refer to the [promote-r-client](https://github.com/alteryx/promote-r-client) library for instructions on installing the R Client.
 
 ### App
 Please refer to the [installation guide](https://help.alteryx.com/promote/current/Administer/Installation.htm?tocpath=Administer%7C_____2) for instructions on installing the Promote App.
@@ -68,7 +68,7 @@ example-model/
 <hr>
 
 #### <a name="setup"></a>Initial Setup
-Load the `promote` package that was previously installed
+Load the `promote` library that was previously installed
 ```python
 import promote
 
@@ -119,7 +119,7 @@ modelFunction <- function(data) {
 <hr>
 
 #### <a name="testing"></a>Test Data
-It is a good practice to test the model function as part of the deployment script to make sure it successfully produces an output. Once deployed, the `data` being input into the model function will always be in the form of an python [dict](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) or [list](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). The incoming JSON will be parsed using the `loads()` method available from the [json](https://docs.python.org/3/library/json.html) package.
+It is a good practice to test the model function as part of the deployment script to make sure it successfully produces an output. Once deployed, the `data` being input into the model function will always be in the form of an python [dict](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) or [list](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). The incoming JSON will be parsed using the `loads()` method available from the [json](https://docs.python.org/3/library/json.html) library.
 
 **Example**
 ```python
@@ -192,7 +192,7 @@ p.predict("MyFirst Model", json.loads(testdata), username=None)
 <hr>
 
 ### `requirements.txt`
-The `requirements.txt` file is how to specify the packages that should be installed by the promote app upon deployment of the model. The `promote` package should always be listed in addition to any other package dependencies. You are also able to specify the version of each package that should be installed.
+The `requirements.txt` file is how to specify the libraries that should be installed by the promote app upon deployment of the model. The `promote` library should always be listed in addition to any other model dependencies. You are also able to specify the version of each library that should be installed.
 
 **Example**
 ```shell
