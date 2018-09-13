@@ -50,16 +50,16 @@ example-model/
 
 - [`promote.sh`](#promotesh): this file is executed before your model is built. It can be used to install low-level system packages such as Linux packages
 
-- [helpers folder](#helpers): use this folder to store helper scripts that can be imported by the main deployment script. This is helpful for keeping you deployment script code clean.
+- [`helpers` directory](#helpers): use this directory to store helper scripts that can be imported by the main deployment script. This is helpful for keeping you deployment script code clean.
 
-- [objects folder`](#objects): use this folder to store model, data, and other artifacts that must be loaded into memory when the model is deployed
+- [`objects` directory](#objects): use this directory to store model, data, and other artifacts that must be loaded into memory when the model is deployed
 <hr>
 
 ### `deploy.py`
 #### Steps
 - [Initial Setup](#setup)
 - [Model Function](#modelpredict)
-- [`@promote.validate_json`](#promotevalidatejson)
+- [`@promote.validate_json`](#validate)
 - [Test Data](#testing)
 - [`promote.Promote`](#promotepromote)
 - [`Promote.metadata`](#promotemetadata)
@@ -101,7 +101,7 @@ modelFunction <- function(data) {
 ```
 <hr>
 
-#### `@promote.validate_json()`
+#### <a name="validate"></a>`@promote.validate_json()`
 It is possible to decorate your model function with the `promote.validate_json` decorator. This validates that the input data to the model meets specific predefined criteria. Failure to meet these criteria will throw an error.
 
 **Arguments**
@@ -119,7 +119,7 @@ modelFunction <- function(data) {
 <hr>
 
 #### <a name="testing"></a>Test Data
-It is a good practice to test the model function as part of the deployment script to make sure it successfully produces an output. Once deployed, the `data` being input into the model function will always be in the form of an python [dict](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) or [list](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). The incoming JSON will be parsed using the `loads()` method available from the [json](https://docs.python.org/3/library/json.html) library.
+It is a good practice to test the model function as part of the deployment script to make sure it successfully produces an output. Once deployed, the `data` being input into the model function will always be in the form of a python [dict](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) or [list](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists). The incoming JSON string will be parsed using the `loads()` method available from the [json](https://docs.python.org/3/library/json.html) library.
 
 **Example**
 ```python
@@ -135,7 +135,7 @@ To deploy models, you'll need to add your username, API key, and URL of Promote 
 **Arguments**
 - `username`(_string_): Your Promote username
 - `apikey`(_string_): Your Promote APIKEY
-- `url`(_string_): URL of your promote server. i.e. https://promote.acmecorp.com/, http://10.252.2.10/
+- `url`(_string_): URL of your promote server
 
 **Example**
 ```python
@@ -161,7 +161,7 @@ p.metadata.dict = {'a': 1, 'b': 'two'}
 <hr>
 
 #### `Promote.deploy()`
-The deploy function captures the model function, any objects in the helpers/ and objects/ directories, the requirements.txt file, and the promote.sh file, and sends them in a bundle to the Promote servers.
+The deploy function captures the model function, any objects in the `helpers` and `objects` directories, the `requirements.txt` file, and the `promote.sh` file, and sends them in a bundle to the Promote servers.
 
 **Arguments**
 - `modelName`(_string_): Name of the model you're deploying. This will be the name of the endpoint for the model as well.
@@ -187,7 +187,7 @@ The `Promote.predict()` method sends data to a deployed model via REST API reque
 
 **Example**
 ```python
-p.predict("MyFirst Model", json.loads(testdata), username=None)
+p.predict("MyFirstModel", json.loads(testdata), username=None)
 ```
 <hr>
 
@@ -196,8 +196,8 @@ The `requirements.txt` file is how to specify the libraries that should be insta
 
 **Example**
 ```shell
-promote==1.10.0
-pandas==0.23.4
+promote
+pandas
 pyodbc==4.0.24
 ```
 <hr>
@@ -221,8 +221,8 @@ source ~/.bashrc
 ```
 <hr>
 
-### <a name="helpers"></a>`helpers` Folder
-Users can also add a `helpers` folder to the root directory of their project to store helper scripts that are used by the deployment script. Please refer to the [Model Directory Structure](#directory) above for an example. Adding an `__init__.py` file to the `helpers` folder will allow the python files in the folder to be discoverable via the python `import` command.
+### <a name="helpers"></a>`helpers` Directory
+Users can also add a `helpers` directory to the root directory of their project to store helper scripts that are used by the deployment script. Please refer to the [Model Directory Structure](#directory) above for an example. Adding an `__init__.py` file to the `helpers` directory will allow the python files in the directory to be discoverable via the python `import` command.
 
 **Example**
 ```python
@@ -230,16 +230,17 @@ from helpers import helper_funs
 ```
 <hr>
 
-### <a name="objects"></a>Objects
-Users can also add an `objects` folder to the root directory of their project to store helper scripts that are used by the deployment script. Please refer to the [Model Directory Structure](#directory) above for an example. The `objects` folder is a great place to put pretrained models and other model dependencies. It is a best practice to train models outside of the `deploy.py` script and to save the trained model to the `objects` folder. This prevents the Promote app from attempting to retrain the model on each redeploy.
+### <a name="objects"></a>`objects` Directory
+Users can also add an `objects` directory to the root directory of their project to store helper scripts that are used by the deployment script. Please refer to the [Model Directory Structure](#directory) above for an example. The `objects` directory is a great place to put pretrained models and other model dependencies. It is a best practice to train models outside of the `deploy.py` script and to save the trained model to the `objects` directory. This prevents the Promote app from attempting to retrain the model on each redeploy.
 
 **Example**
 ```python
 my_model = pickle.load( open( "./objects/my_model.p", "rb" ) )
 ```
+<hr>
 
 ### Deployment
-Currently, the only way to deploy a python model is to execute the `deploy.py` script from the command line terminal. To do this, open a command line window, navigate to the root project folder and run the following
+Currently, the only way to deploy a python model is to execute the `deploy.py` script from a command line terminal. To do this, open a command line window, navigate to the root project directory and run the following
 ```python
 python deploy.py
 ```
