@@ -12,7 +12,6 @@ API_KEY = "[API_KEY]"
 PROMOTE_URL = "[PROMOTE_URL]"
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
-
 def cnn_model_fn(features, labels, mode):
     """Model function for CNN."""
     # Input Layer
@@ -86,7 +85,7 @@ def tensorflow_model(data):
     f = BytesIO(b)
     img = Image.open(f)
     img = img.convert('1')
-    
+
     # crop whitespace
     bg = Image.new(img.mode, img.size, 255)
     diff = ImageChops.difference(img, bg)
@@ -104,11 +103,11 @@ def tensorflow_model(data):
         num_epochs=1,
         shuffle=False)
     predict_results = list(mnist_classifier.predict(predict_input_fn,yield_single_examples=True))[0]
-    
+
     buffered = BytesIO()
     img.resize(STANDARD_SIZE).save(buffered, format="JPEG")
     img_str = base64.b64encode(buffered.getvalue())
-    
+
     predict_results['classes'] = int(predict_results['classes'])
     predict_results['img'] = img_str.decode()
     predict_results['ts'] = data["request_timestamp"]

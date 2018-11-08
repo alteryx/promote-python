@@ -85,7 +85,7 @@ def main(unused_argv):
 
     # Create the Estimator
     mnist_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir="C:/Users/dcooperberg/Alteryx/promote-python/examples/tensorflow/objects/mnist_convnet_model")
+        model_fn=cnn_model_fn, model_dir="./objects/mnist_convnet_model")
 
     # Set up logging for predictions
     tensors_to_log = {"probabilities": "softmax_tensor"}
@@ -96,12 +96,12 @@ def main(unused_argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=100,
+        batch_size=1000,
         num_epochs=None,
         shuffle=True)
     mnist_classifier.train(
         input_fn=train_input_fn,
-        steps=20000,
+        steps=100,
         hooks=[logging_hook])
 
     # Evaluate the model and print results

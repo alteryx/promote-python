@@ -1,4 +1,4 @@
-promote
-tensorflow
-numpy
-pillow
+promote==1.10.0
+tensorflow==1.8.0
+numpy==1.14.3
+pillow==5.1.0
