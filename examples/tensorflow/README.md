@@ -19,7 +19,7 @@ tensorflow/
 In a terminal shell run:
 ```bash
 # install tensorflow & other requirements
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # train and save tensorflow model
 $ python cnn_mnist.py
