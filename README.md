@@ -2,21 +2,21 @@
 Library for deploying Python models to Alteryx Promote.
 
 ## Examples
-[Hello World](examples/hello-world) - a very simple model.
+[Hello World](examples/hello-world) - a very simple model
 
-[Hello Vectorized](examples/hello-vectorized) - a vectorized version of the 'Hello World' model.
+[Hello Vectorized](examples/hello-vectorized) - a vectorized version of the 'Hello World' model
 
-[Iris Classifier](examples/iris-classifier) - use a Support Vector Classifier to predict flower types.
+[Iris Classifier](examples/iris-classifier) - use a Support Vector Classifier to predict flower types
 
-[Article Summarizer](examples/article-summarizer) - send a url with a news article and get a summary.
+[Article Summarizer](examples/article-summarizer) - send a url with a news article and get a summary
 
-[DB Lookup](examples/db-lookup) - lookup a value in a database.
+[DB Lookup](examples/db-lookup) - lookup a value in a database
 
-[Ensemble Model](examples/ensemble-model) - build and deploy an ensemble model.
+[Ensemble Model](examples/ensemble-model) - build and deploy an ensemble model
 
-[Naivebayes Pomegranate](examples/naivebayes-pomegranate) - an Naive Bayes model using the pomegranate library.
+[Naivebayes Pomegranate](examples/naivebayes-pomegranate) - an Naive Bayes model using the pomegranate library
 
-[Weather Model](examples/weather-model) - send Lat/Lon data and get real-time weather data and classify temperature.
+[Weather Model](examples/weather-model) - send Lat/Lon data and get real-time weather data and classify temperature
 
 ## Installation
 ### Client
@@ -89,20 +89,26 @@ my_model = pickle.load( open( "./objects/my_model.p", "rb" ) )
 ### <a name="modelpredict"></a>Model Function
 The model function is used to define the API endpoint for a model and is executed each time a model is called. **This is the core of the API endpoint.**
 
+**Usage**
+
+`foo(data)`
+
 **Arguments**
 - `data`(_list_ or _dict_): the parsed JSON sent to the deployed model
 
 **Example:**
 ```python
-modelFunction <- function(data) {
-  # generate predictions from the model based on the incoming data
-  my_model.predict(data)
-}
+def modelFunction(data):
+    my_model.predict(data)
 ```
 <hr>
 
 ### <a name="validate"></a>`@promote.validate_json()`
 It is possible to decorate your model function with the `promote.validate_json` decorator. This validates that the input data to the model meets specific predefined criteria. Failure to meet these criteria will throw an error.
+
+**Usage**
+
+`@promote.validate_json(aSchema)`
 
 **Arguments**
 - `aSchema`(_Schema_): a valid `schema.Schema` object
@@ -112,9 +118,8 @@ It is possible to decorate your model function with the `promote.validate_json` 
 from schema import Schema, And
 
 @promote.validate_json(Schema({'X1': And(int, lambda s: min([t > 0 for t in s]))},{'X2': And(int, lambda s: min([t > 0 for t in s]))}))
-modelFunction <- function(data) {
-  my_model.predict(data)
-}
+def modelFunction(data):
+    my_model.predict(data)
 ```
 <hr>
 
@@ -123,7 +128,7 @@ It is a good practice to test the model function as part of the deployment scrip
 
 **Example:**
 ```python
-testdata <- '{"X1":[1,2,3],"X2":[4,5,6]}'
+testdata = '{"X1":[1,2,3],"X2":[4,5,6]}'
 modelFunction(json.loads(testdata))
 
 ```
@@ -131,6 +136,10 @@ modelFunction(json.loads(testdata))
 
 ### `promote.Promote()`
 To deploy models, you'll need to add your username, API key, and URL of Promote to a new instance of the class `Promote`.
+
+**Usage**
+
+`promote.Promote(username, apikey, url)`
 
 **Arguments**
 - `username`(_string_): Your Promote username
@@ -163,12 +172,16 @@ p.metadata.dict = {'a': 1, 'b': 'two'}
 ### `Promote.deploy()`
 The deploy function captures the model function, any objects in the `helpers` and `objects` directories, the `requirements.txt` file, and the `promote.sh` file, and sends them in a bundle to the Promote servers.
 
+**Usage**
+
+ `p.deploy(modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1)`
+
 **Arguments**
-- `modelName`(_string_): Name of the model you're deploying. This will be the name of the endpoint for the model as well.
-- `functionToDeploy`(_function_): Function you'd like to deploy to Promote.
-- `testdata`(_list_ or _dict_): Sample data that will be used to validate your model can successfully execute.
-- `confirm`(_boolean_, optional): If True, deployment will pause before uploading to the server and validate that you actually want to deploy.
-- `dry_run`(_boolean_, optional): If True, deployment will exit prior to uploading to the server and will instead return the bundle.
+- `modelName`(_string_): Name of the model you're deploying (this will be the name of the endpoint for the model as well)
+- `functionToDeploy`(_function_): Function you'd like to deploy to Promote
+- `testdata`(_list_ or _dict_): Sample data that will be used to validate your model can successfully execute
+- `confirm`(_boolean_, optional): If True, deployment will pause before uploading to the server and validate that you actually want to deploy
+- `dry_run`(_boolean_, optional): If True, deployment will exit prior to uploading to the server and will instead return the bundle
 - `verbose`(_int_, optional): Controls the amount of logs displayed. Higher values indicate more will be shown
 
 **Example:**
@@ -180,9 +193,13 @@ p.deploy("MyFirstPythonModel", modelFunction, testdata, confirm=False, dry_run=F
 ### `Promote.predict()`
 The `Promote.predict()` method sends data to a deployed model via REST API request and returns a prediction.
 
+**Usage**
+
+`p.predict(modelName, data, username=None)`
+
 **Arguments**
-- `model`(_string_): Name of the model you'd like to query
-- `data`(_list_ or _dict_): Data you'd like to send to the model to be scored.
+- `modelName`(_string_): Name of the model you'd like to query
+- `data`(_list_ or _dict_): Data you'd like to send to the model to be scored
 - `username`(_string_, optional): Username of the model you'd like to query. This will default to the one set in the Promote constructor. However if you'd like to query another person's model or a production model, this will come in handy.
 
 **Example:**
