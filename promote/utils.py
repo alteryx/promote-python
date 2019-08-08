@@ -29,7 +29,8 @@ def post_file(url, auth, bundle, modelObjectsPath):
     }
 
     try:
-        r = requests.post(url=url, files=files, auth=auth, data=bundle)
+        print ("no ssl verify")
+        r = requests.post(url=url, files=files, auth=auth, data=bundle, verify=False)
         if r.status_code != 200:
             r.raise_for_status()
     except requests.exceptions.HTTPError as err:
