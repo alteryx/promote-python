@@ -11,9 +11,10 @@ h2o-classifier/
 ├── deploy.py
 ├── iris.csv
 ├── objects
-│   └── DRF_model_python_1524085511585_1
+│   └── h2o_rf_model
+├── promote.sh
 ├── requirements.txt
-└── train.py
+└── train.pyy
 ```
 
 ### Instructions
@@ -27,7 +28,7 @@ $ pip install requirements.txt
 $ python train.py
 
 # finally, deploy the model
-$ python main.py
+$ python deploy.py
 ```
 
 ### Example input:
@@ -39,12 +40,22 @@ $ python main.py
 ### Result
 
 ```
-{'response': 
-    {'predict': 
-        {0: 'Iris-setosa'},
-        'Iris-setosa': {0: 0.99897540982272015},
-        'Iris-versicolor': {0: 0},
-        'Iris-virginica': {0: 0.0010245901772798741}
+{
+  "result": {
+    "response": {
+      "predict": {
+        "0": "Iris-setosa"
+      },
+      "Iris-setosa": {
+        "0": 0.9956357962858318
+      },
+      "Iris-versicolor": {
+        "0": 0
+      },
+      "Iris-virginica": {
+        "0": 0.004364203714168255
+      }
     }
+  },
 }
 ```
