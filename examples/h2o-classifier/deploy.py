@@ -4,7 +4,7 @@ import os
 
 h2o.init()
 
-model_path = os.path.abspath('./objects/DRF_model_python_1524085511585_1')
+model_path = os.path.abspath('./objects/h2o_rf_model')
 model = h2o.load_model(model_path)
 
 def helloh2o(data):
@@ -14,10 +14,9 @@ def helloh2o(data):
     res = model.predict(h2o_data).as_data_frame().to_dict()
     return {'response': res}
 
-USERNAME = 'ross'
+USERNAME = 'username'
 API_KEY = 'your_api_key'
-PROMOTE_URL = "https://promote.c.yhat.com/"
-
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 

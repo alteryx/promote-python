@@ -15,4 +15,8 @@ model = H2ORandomForestEstimator(ntrees=50, max_depth=20, nfolds=10)
 model.train(x=training_columns, y=response_column, training_frame=train)
 
 save_path = os.path.realpath('.') + '/objects/'
-h2o.save_model(model=model, path=save_path)
+model_path = h2o.save_model(model=model, path=save_path, force=True)
+
+# h2o uses the model_id (random) to name the model, so we're going to rename it to something else
+# so we can access it in the deploy script
+os.rename(model_path, os.path.join(save_path, 'h2o_rf_model'))
