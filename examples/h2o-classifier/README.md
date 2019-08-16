@@ -3,6 +3,33 @@
 
 This model uses the h2o python library to train a RandomForest classifier to predict flower species.
 
+### Important notes about H2O models
+
+Alteryx recommends limiting the amount of memory that h2o can consume with the `max_mem_size` flag when you initialize H2O in your model code.
+The defualt is 4GB, which is likely more than you need! This number will depend on the size of your model, but 100MB is a good place to start.
+
+Here's an example:
+
+```Python
+h2o.init(max_mem_size='100m')
+```
+
+See http://docs.h2o.ai/h2o/latest-stable/h2o-py/docs/h2o.html?highlight=remove#h2o.init for more information.
+
+H2O will automatically hold on to the input and prediction data, which is a feature we don't need in Promote and will consume a lot of memory if you're sending a lot of requests to a model and will eventually lead to dropped predictions and high latency.
+You must use h2o.remove() to remove this data from H2O's memory.
+
+Here's an example:
+
+```Python
+h2o.remove(h2o_data)
+h2o.remove(prediction)
+```
+
+See http://docs.h2o.ai/h2o/latest-stable/h2o-py/docs/h2o.html?highlight=remove#h2o.remove for more information.
+
+Just follow our example and you'll be in good shape!
+
 **Project structure:**
 
 ```
