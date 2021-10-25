@@ -7,15 +7,9 @@ from PIL import Image, ImageChops
 from time import time
 import operator
 
-# USERNAME = 'ross'
-# API_KEY = 'd580d451-06b9-4c10-a73f-523adca5f48c'
-# PROMOTE_URL = "http://localhost:3000/"
-USERNAME = 'ming'
-API_KEY = '393c149d-5867-47a2-948e-d4b0eba6cda1'
-PROMOTE_URL = "http://172.27.96.44/"
-# USERNAME = "[USERNAME]"
-# API_KEY = "[API_KEY]"
-# PROMOTE_URL = "[PROMOTE_URL]"
+USERNAME = 'username'
+API_KEY = 'your_api_key'
+PROMOTE_URL = 'http://www.promote_url.com'
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 def cnn_model_fn(features, labels, mode):
