@@ -3,6 +3,13 @@
 
 This model builds a Naive Bayes Classifier, using the [pomegrante](http://pomegranate.readthedocs.io/en/latest/) package.
 
+**NOTE:** This model requires Python version >= 3.7. To upgrade Python version, please visit: 
+
+* [Upgrade for the versions of Python and its dependencies](examples/check_env/upgrade-dependencies.md)
+
+* [Check upgrades for the versions of Python and its dependencies](examples/check_env/README.md)
+
+
 In building this model, we save the Classifier to the `/objects` directory for future use.
 
 ### Example 
@@ -35,10 +42,10 @@ and returns:
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # next, train the model
-$ train-naivebayes.py
+$ python train-naivebayes.py
 
 # lastly, deploy the model
 $ python deploy.py

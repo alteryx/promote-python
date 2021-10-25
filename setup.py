@@ -20,7 +20,7 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'promote', 'v
         ),
         install_requires=[
             "progressbar2==3.10.1",
-            "requests >= 2.18.1",
+            "requests >= 2.18.1, < 2.25.0",
             "requests-toolbelt==0.7.0",
             "schema==0.6.5"
         ],

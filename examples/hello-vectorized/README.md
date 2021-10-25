@@ -36,7 +36,7 @@ and returns:
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # lastly, deploy the model
 $ python main.py

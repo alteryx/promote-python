@@ -4,9 +4,9 @@ from schema import Schema
 import newspaper
 from newspaper import Article
 
-USERNAME = "colin"
-API_KEY = "your_api_key"
-PROMOTE_URL = "http://promote.c.yhat.com/"
+USERNAME = 'username'
+API_KEY = 'your_api_key'
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 

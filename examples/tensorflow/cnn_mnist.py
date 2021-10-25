@@ -3,14 +3,21 @@ from __future__ import division
 from __future__ import print_function
 
 # Imports
+import logging
+logging.getLogger("tensorflow").setLevel(logging.INFO)
+
 import numpy as np
 import tensorflow as tf
+# import tensorflow.compat.v2 as tf
+from absl import app
+# import tensorflow_addons as tfa
+
 from PIL import Image, ImageChops
 import os
 import base64
 import random
 
-tf.logging.set_verbosity(tf.logging.INFO)
+# tf.logging.set_verbosity(tf.logging.INFO)
 
 def cnn_model_fn(features, labels, mode):
     """Model function for CNN."""
@@ -114,4 +121,4 @@ def main(unused_argv):
     print(eval_results)
 
 if __name__ == "__main__":
-    tf.app.run()
+    app.run(main)

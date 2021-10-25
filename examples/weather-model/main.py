@@ -6,10 +6,9 @@ from helpers import tempdesc
 from helpers import get_weather
 
 # instanciate the Promote class with our API information
-USERNAME = "colin"
-API_KEY = "your_api_key"
-PROMOTE_URL = "https://promote.c.yhat.com/"
-DARKSKY_API_KEY = os.environ['DARKSKY_API_KEY'] # get a darksky api key: https://darksky.net/dev
+USERNAME = 'username'
+API_KEY = 'your_api_key'
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 

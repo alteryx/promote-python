@@ -17,7 +17,7 @@ This model uses an NLP package called `newspaper` to summarize documents.
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # we need to install the 'punkt' nltk package for the NLP summarization
 $ python -c "import nltk; nltk.download('punkt')"
