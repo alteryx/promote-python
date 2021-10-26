@@ -13,8 +13,8 @@ python-utils==2.0.0
 protobuf==3.8.0
 opt-einsum==2.3.2
 grpcio==1.24.3
-tensorflow==2.2
-pillow==8.3.2
+tensorflow>=2.5.1
+pillow>=8.3.2
 tensorflow_addons==0.14.0
 matplotlib==3.4.3
 graphviz==0.17
