@@ -1,4 +1,4 @@
-## Upgrade promote-app Python dependencies when deploying a model
+## Upgrade Python dependencies when deploying a model
 
 ### Purpose
 ML is growing fast. Promote-app platform was built couple years ago. And Some ML modules require higher/newer version of dependencies. 
@@ -7,9 +7,9 @@ In this scenario, sometimes it's needed upgrade the version of dependencies to m
 
 ### Promote-app platform Structure
 
-Promote platform is using Docker images and containers for promote platform components and ML models.
+Promote platform is using Docker images and containers for Promote platform components and ML models.
 
-When ML model has been deployed to promote-app platform, a docker image of the model had been built.
+When ML model has been deployed to Promote platform, a docker image of the model had been built.
 
 ```shell
 [centos@ip ~]$ docker images
@@ -41,12 +41,12 @@ In general, there are 2 options to upgrade the version dependencies:
 * Upgrade promote-app platform with higher/new version
 * Upgrade the dependencies when building docker image of ML model 
 
-As promote-app is a complex system, to upgrade promote-app platform will take time for fully testing.
+As Promote platform is a complex system, to upgrade Promote platform will take time for fully testing.
 
 In this document, will upgrade the dependencies when building docker image of ML model 
 
 ### Important disclosure:
-Promote-app 1.10 was developed and tested base on the following tech env.  
+Promote platform 1.10 was developed and tested base on the following tech env.  
  * Node 8.17.X or 10.24.X
  * Python 3.6.x
    * progressbar2==3.10.1
@@ -59,7 +59,7 @@ Promote-app 1.10 was developed and tested base on the following tech env.
 
 
 ### How to upgrade Python and/or Python modules  
-1, When deploying a model, promote-app will look for promote.sh file first. If promote.sh file exists, promote-app will execute it.
+1, When deploying a model, Promote platform will look for promote.sh file first. If promote.sh file exists, promote-app will execute it.
 
 To update python (miniconda3) and pip at promote.sh file. Here Python3.8 will be installed:
 

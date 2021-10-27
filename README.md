@@ -274,3 +274,6 @@ Currently, the only way to deploy a python model is to execute the `deploy.py` s
 ```python
 python deploy.py
 ```
+
+## Upgrade Python dependencies when deploying a model
+[Upgrade Python dependencies when deploying a model](examples/check_env/upgrade-dependencies.md)
