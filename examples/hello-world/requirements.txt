@@ -1,3 +1,2 @@
 promote==1.10
 schema==0.6.5
-requests==2.21
