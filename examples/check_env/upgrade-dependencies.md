@@ -94,4 +94,4 @@ def check_env(data):
 ```
 
 4, This screeshot show the result:
-![img.png](checkEnv Screen Shot.png)
+![img.png](checkEnv_screen_shot.png)
