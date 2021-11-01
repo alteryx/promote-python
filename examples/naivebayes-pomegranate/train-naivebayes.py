@@ -15,5 +15,5 @@ y_train[idxs] = -1
 model = NaiveBayes.from_samples(NormalDistribution, X_train, y_train, verbose=True)
 
 import json
-with open('naive_weights.pomo', 'w') as outfile:
+with open('objects/naive_weights.pomo', 'w') as outfile:
     json.dump(model.to_json(), outfile)

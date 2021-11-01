@@ -8,9 +8,9 @@ def helloWorldVec(data):
         } for i in data]
 
 
-USERNAME = 'ross'
+USERNAME = 'username'
 API_KEY = 'your_api_key'
-PROMOTE_URL = "https://promote.c.yhat.com/"
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
@@ -22,4 +22,4 @@ TESTDATA = [{"id": 1, "name": "Colin"}, {"id": 2, "name": "Ross"}]
 print(helloWorldVec(TESTDATA))
 
 p.deploy("HelloModelVec", helloWorldVec, TESTDATA,
-         confirm=False, dry_run=True, verbose=1)
+         confirm=False, dry_run=False, verbose=1)

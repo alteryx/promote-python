@@ -3,7 +3,7 @@ from schema import Schema
 from pomegranate import NaiveBayes, NormalDistribution
 import json
 
-WEIGHTS = json.load(open('./objects/naive_weights.pomo'))
+WEIGHTS = json.load(open('objects/naive_weights.pomo'))
 
 model = NaiveBayes.from_json(WEIGHTS)
 
@@ -11,9 +11,9 @@ def NaiveBayes(data):
     r = model.predict(data).tolist()
     return r
 
-USERNAME = "ross"
-API_KEY = "your_api_key"
-PROMOTE_URL = "https://promote.c.yhat.com/"
+USERNAME = 'username'
+API_KEY = 'your_api_key'
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 

@@ -8,9 +8,13 @@ This model uses Tensorflow to traing an image classifier on the MNIST handdrawn 
 tensorflow/
 ├── README.md
 ├── objects
-│   └── image.png
-├── cnn_mnist.py
-├── main.py
+│   ├── image.png
+│   └── model.png
+├── promote.sh ==> this is used to upgrade the versions of Python and its dependencies  
+├── main_v2.py ==> this is working with tensorflow version 2.2 
+├── mnist.py ==> this is working with tensorflow version 2.2
+├── cnn_mnist.py ==> this was working with tensorflow version 1 
+├── main.py ==> this was working with tensorflow version 1.X 
 └── requirements.txt
 ```
 
@@ -22,10 +26,10 @@ In a terminal shell run:
 $ pip install -r requirements.txt
 
 # train and save tensorflow model
-$ python cnn_mnist.py
+$ python mnist.py
 
 #deploy trained tensorflow model to Promote
-$ python main.py
+$ python main_v2.py
 ```
 
 ### Example input:

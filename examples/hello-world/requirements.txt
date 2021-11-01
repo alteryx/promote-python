@@ -1,2 +1,2 @@
-promote
+promote==1.10
 schema==0.6.5

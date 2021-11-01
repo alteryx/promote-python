@@ -72,7 +72,7 @@ h2o-classifier/
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # next, train the model
 $ python train.py

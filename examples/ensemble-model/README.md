@@ -26,7 +26,7 @@ ensemble-model/
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # train the models
 
