@@ -48,7 +48,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(3, len(self.p._get_requirements().split('\n')))
     
     def testReadPromoteshFile(self):
-        self.assertEqual(1, len(self.p._get_promotesh().split('\n')))
+        self.assertEqual(1, len(self.p._get_promote_sh().split('\n')))
 
     def testMissingRequirementsFile(self):
         self.p.deployment_dir = '/non-existant-directory'

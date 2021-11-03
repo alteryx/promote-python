@@ -1,17 +1,14 @@
 import requests
-import base64
 import os
 import sys
 import logging
 import json
-import pprint as pp
 import urllib
 import re
-import tempfile
 import tarfile
-
 from . import utils
 from .metadata import Metadata
+
 
 class Promote(object):
     """
@@ -29,11 +26,11 @@ class Promote(object):
     Examples
     ========
     >>> p = promote.Promote("colin", "789asdf879h789a79f79sf79s", "https://my-promote.mycompany.com/")
-    >>> p.deploy("HelloModel", promoteModel, testdata=testdata, confirm=True, dry_run=False, verbose=0)
+    >>> p.deploy("HelloModel", promoteModel, test_data=testdata, confirm=True, dry_run=False, verbose=0)
     >>> p.predict("HelloWorld", { "name": "Colin" })
     """
 
-    def __init__(self, username, apikey, url):
+    def __init__(self, username: str = None, apikey: str = None, url: str = None) -> None:
         if username is None:
             raise Exception("Specify a username")
 
@@ -59,16 +56,15 @@ class Promote(object):
             raise Exception('The path to your deployment directory does not exist: {}'.format(
                 self.deployment_dir))
 
-    def _get_function_source_code(self, functionToDeploy):
+    def _get_function_source_code(self, function_to_deploy: str) -> str:
         source = ''
         with open(self.deployment_file, 'r', encoding='utf-8') as f:
             source = f.read()
 
-        source += "\npromoteModel = {}\n".format(functionToDeploy.__name__)
-
+        source += "\npromoteModel = {}\n".format(function_to_deploy.__name__)
         return source
 
-    def _get_objects(self):
+    def _get_objects(self) -> (dict, str):
         objects_dir = os.path.join(self.deployment_dir, 'objects')
 
         if not os.path.exists(self.deployment_dir):
@@ -78,16 +74,14 @@ class Promote(object):
         if not os.path.exists(objects_dir):
             logging.info('no pickles directory found in {}'.format(objects_dir))
             # Create an empty tarfile if there is no objects directory
-            tarName = os.path.join(self.deployment_dir, 'objects.tar.gz')
-            tarFile = open(tarName, 'wb')
-            with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
+            tar_name = os.path.join(self.deployment_dir, 'objects.tar.gz')
+            with open(tar_name, 'wb') as tar_file, tarfile.open(mode='w:gz', fileobj=tar_file) as tar:
                 pass
-            tarFile.close()
-            return {}, tarName
+            return {}, tar_name
 
-        tarName = os.path.join(objects_dir, 'objects.tar.gz')
-        if os.path.exists(tarName):
-            os.unlink(tarName)
+        tar_name = os.path.join(objects_dir, 'objects.tar.gz')
+        if os.path.exists(tar_name):
+            os.unlink(tar_name)
 
         objects = {}
         for path in os.listdir(objects_dir):
@@ -99,16 +93,13 @@ class Promote(object):
                 self.addedfiles.append(path)
                 objects[path] = path
 
-        tarFile = open(tarName, 'wb')
-        with tarfile.open(mode='w:gz', fileobj=tarFile) as tar:
+        with open(tar_name, 'wb') as tar_file, tarfile.open(mode='w:gz', fileobj=tar_file) as tar:
             tar.add(objects_dir, arcname='objects')
-        tarFile.close()
 
-        return objects, tarName
+        return objects, tar_name
 
-    def _get_requirements(self):
-        requirements_file = os.path.join(
-            self.deployment_dir, 'requirements.txt')
+    def _get_requirements(self) -> str:
+        requirements_file = os.path.join(self.deployment_dir, 'requirements.txt')
         if not os.path.exists(requirements_file):
             logging.info(
                 'no requirements file found in {}'.format(requirements_file))
@@ -122,17 +113,17 @@ class Promote(object):
                     "You don't have Promote listed as a requirement. It's impossible to deploy a model without it")
         return requirements
 
-    def _get_promotesh(self):
-        promotesh_file = os.path.join(self.deployment_dir, 'promote.sh')
-        if not os.path.exists(promotesh_file):
-            logging.info('no promote.sh file found in {}'.format(promotesh_file))
+    def _get_promote_sh(self) -> str:
+        promote_sh_file = os.path.join(self.deployment_dir, 'promote.sh')
+        if not os.path.exists(promote_sh_file):
+            logging.info('no promote.sh file found in {}'.format(promote_sh_file))
             return {}
 
-        with open(promotesh_file, 'r') as f:
+        with open(promote_sh_file, 'r') as f:
             promote_file_obj = f.read()
         return promote_file_obj
 
-    def _get_helper_modules(self):
+    def _get_helper_modules(self) -> str:
         helpers_dir = os.path.join(self.deployment_dir, 'helpers')
         if not os.path.exists(helpers_dir):
             logging.info(
@@ -159,54 +150,47 @@ class Promote(object):
                 ))
         return json.dumps(helpers)
 
-    def _get_bundle(self, functionToDeploy, modelName):
-        bundle = dict(
-            modelname = modelName,
-            language = "python",
-            username = self.username,
-            code = None,
-            objects = {},
-            modules = [],
-            image = None,
-            reqs = "",
-            promotesh = "",
-            metadata = {}
-        )
-
+    def _get_bundle(self, function_to_deploy: str, model_name: str) -> dict:
         logging.info('deploying model using file: {}'.format(
             self.deployment_file))
+        return dict(
+           modelname=model_name,
+           language="python",
+           username=self.username,
+           code=self._get_function_source_code(function_to_deploy),
+           objects={},
+           modules=self._get_helper_modules(),
+           image=None,
+           reqs=self._get_requirements(),
+           promotesh=self._get_promote_sh(),
+           metadata={}
+        )
 
-        # extract source code for function
-        bundle['code'] = self._get_function_source_code(functionToDeploy)
-        bundle['reqs'] = self._get_requirements()
-        bundle['promotesh'] = self._get_promotesh()
-        bundle['modules'] = self._get_helper_modules()
-
-        return bundle
-
-    def _confirm(self):
+    @staticmethod
+    def _confirm() -> None:
         response = input(
             "Are you sure you'd like to deploy this model? (y/N): ")
         if response.lower() != "y":
             logging.warning("Deployment Cancelled")
             sys.exit(1)
 
-    def _upload_deployment(self, bundle, modelObjectsPath):
+    def _upload_deployment(self, bundle: dict, model_objects_path: str):
         deployment_url = urllib.parse.urljoin(self.url, '/api/deploy/python')
-        return utils.post_file(deployment_url, (self.username, self.apikey), bundle, modelObjectsPath)
+        return utils.post_file(deployment_url, (self.username, self.apikey), bundle, model_objects_path)
 
-    def deploy(self, modelName, functionToDeploy, testdata, confirm=False, dry_run=False, verbose=1):
+    def deploy(self, model_name: str, function_to_deploy: str, test_data: dict,
+               confirm: bool = False, dry_run: bool = False, verbose: int = 1):
         """
         Deploys a model to your Promote instance. If it's the first time the model is being deployed,
         a new endpoint will be created for the model.
 
         Parameters
         ==========
-        modelName: str
+        model_name: str
             Name of the model you're deploying. This will be the name of the endpoint for the model as well.
-        functionToDeploy: func
+        function_to_deploy: func
             Function you'd like to deploy to Promote.
-        testdata: dict, list
+        test_data: dict, list
             Sample data that will be used to validate your model can successfully execute.
         confirm: bool (default: False)
             If True, deployment will pause before uploading to the server and validate that you actually want
@@ -220,7 +204,7 @@ class Promote(object):
         ========
         >>> def sayHello(data):
         ...     return "Hello " + str(data)
-        >>> p.deploy("HelloModel", sayHello, testdata=testdata, confirm=True, dry_run=False, verbose=0)
+        >>> p.deploy("HelloModel", sayHello, test_data=testdata, confirm=True, dry_run=False, verbose=0)
         """
         levels = {
             0: logging.WARNING,
@@ -235,45 +219,45 @@ class Promote(object):
         if os.environ.get('PROMOTE_PRODUCTION'):
             return
 
-        if re.match("^[A-Za-z0-9]+$", modelName) == None:
+        if re.match("^[A-Za-z0-9]+$", model_name) == None:
             logging.warning(
                 "Model name can only contain following characters: A-Za-z0-9")
             return
 
-        if len(modelName) > 35:
+        if len(model_name) > 35:
             logging.warning("Model name must be fewer than 35 characters")
             return
 
-        bundle = self._get_bundle(functionToDeploy, modelName)
-        modelObjects, tarfilePath = self._get_objects()
-        bundle['objects'] = modelObjects
+        bundle = self._get_bundle(function_to_deploy, model_name)
+        model_objects, tar_file_path = self._get_objects()
+        bundle['objects'] = model_objects
         if len(self.metadata) > 6:
             raise Exception('Attempted to deploy with {} metadata items. Max allowed is 6.'.format(len(bundle['metadata'])))
         bundle['metadata'] = json.dumps(self.metadata)
 
-        if confirm == True:
+        if confirm is True:
             self._confirm()
 
         logging.info('Deploying with the following files:')
         for f in self.addedfiles:
             logging.info(f)
 
-        if dry_run == True:
+        if dry_run is True:
             logging.warning('dry_run=True, not deploying model')
             return bundle
 
-        response = self._upload_deployment(bundle, tarfilePath)
+        response = self._upload_deployment(bundle, tar_file_path)
 
         return response
 
-    def predict(self, modelName, data, username=None):
+    def predict(self, model_name: str, data: dict, username: str = None) -> dict:
         """
         Makes a prediction using the model's endpoint on your Promote server.
         You can query a different user's model by passing a username.
 
         Parameters
         ==========
-        modelName: str
+        model_name: str
             Name of the model you'd like to query
         data: dict, list
             Data you'd like to send to the model to be scored.
@@ -289,7 +273,7 @@ class Promote(object):
         >>> p.predict("HelloWorld", { "name": "Billy Bob Thorton" }, username="billybob")
         """
         prediction_url = urllib.parse.urljoin(self.url, os.path.join(
-            self.username, 'models', modelName, 'predict'))
+            self.username, 'models', model_name, 'predict'))
         username = username if username else self.username
 
         headers = {

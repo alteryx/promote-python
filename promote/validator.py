@@ -1,9 +1,11 @@
 from functools import wraps
 from schema import Schema, And
 
+
 def validate_json(aSchema):
     if not isinstance(aSchema, Schema):
         raise Exception("validate_json can only accept a Schema class")
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -19,11 +21,9 @@ def main():
     def foo(data):
         print('hi')
 
-
     @validate_json(Schema({'name': And(str, len)}))
     def ok(data):
         print('hi')
-
 
     ok({"name": "Greg"})
     foo({"name": "Greg"})

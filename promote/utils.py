@@ -1,9 +1,6 @@
 import zlib
-import tempfile
-import json
 import os
 import requests
-from requests_toolbelt.multipart.encoder import MultipartEncoderMonitor, MultipartEncoder
 import sys
 import logging
 
@@ -17,8 +14,8 @@ def zlib_compress(data, to):
 
     to.write(c.flush())
 
-def post_file(url, auth, bundle, modelObjectsPath):
 
+def post_file(url, auth, bundle, modelObjectsPath):
     # zlib_compress(modelObjects, modelObjectsFile)
     modelObjectsFile = open(modelObjectsPath, 'rb')
     size = sizeof_fmt(os.path.getsize(modelObjectsPath))
@@ -51,12 +48,14 @@ def post_file(url, auth, bundle, modelObjectsPath):
     rsp = r.text
     return rsp
 
+
 def cleanupFile(file):
     try:
         file.close()
         os.unlink(file.name)
     except:
         pass
+
 
 def sizeof_fmt(num, suffix='B'):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
