@@ -19,7 +19,7 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'promote', 'v
         classifiers=(
         ),
         install_requires=[
-            "requests",
+            "requests=>=2.22.0",
             "schema"
         ],
         long_description=open("README.rst").read(),

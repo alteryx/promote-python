@@ -7,9 +7,13 @@ from PIL import Image, ImageChops
 from time import time
 import operator
 
-USERNAME = "[USERNAME]"
-API_KEY = "[API_KEY]"
-PROMOTE_URL = "[PROMOTE_URL]"
+# USERNAME = 'username'
+# API_KEY = 'your_api_key'
+# PROMOTE_URL = 'http://www.promote_url.com'
+USERNAME = 'ming'
+API_KEY = '6a7927c1-2464-466b-b297-f5d4de821421'
+PROMOTE_URL = 'http://172.27.96.55/'
+
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 def cnn_model_fn(features, labels, mode):
@@ -18,7 +22,7 @@ def cnn_model_fn(features, labels, mode):
     input_layer = tf.reshape(features["x"], [-1, 28, 28, 1])
 
     # Convolutional Layer #1
-    conv1 = tf.layers.conv2d(
+    conv1 = tf.compat.v1.layers.conv2d(
         inputs=input_layer,
         filters=32,
         kernel_size=[5, 5],
@@ -26,25 +30,25 @@ def cnn_model_fn(features, labels, mode):
     activation=tf.nn.relu)
 
     # Pooling Layer #1
-    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
+    pool1 = tf.compat.v1.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
 
     # Convolutional Layer #2 and Pooling Layer #2
-    conv2 = tf.layers.conv2d(
+    conv2 = tf.compat.v1.layers.conv2d(
         inputs=pool1,
         filters=64,
         kernel_size=[5, 5],
         padding="same",
         activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
+    pool2 = tf.compat.v1.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
 
     # Dense Layer
     pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
-    dropout = tf.layers.dropout(
+    dense = tf.compat.v1.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
+    dropout = tf.compat.v1.layers.dropout(
         inputs=dense, rate=0.4, training=mode == tf.estimator.ModeKeys.TRAIN)
 
     # Logits Layer
-    logits = tf.layers.dense(inputs=dropout, units=10)
+    logits = tf.compat.v1.layers.dense(inputs=dropout, units=10)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
@@ -58,19 +62,19 @@ def cnn_model_fn(features, labels, mode):
         return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
 
     # Calculate Loss (for both TRAIN and EVAL modes)
-    loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+    loss = tf.compat.v1.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
 
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
+        optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=0.001)
         train_op = optimizer.minimize(
             loss=loss,
-            global_step=tf.train.get_global_step())
+            global_step=tf.compat.v1.train.get_global_step())
         return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
 
     # Add evaluation metrics (for EVAL mode)
     eval_metric_ops = {
-        "accuracy": tf.metrics.accuracy(
+        "accuracy": tf.compat.v1.metrics.accuracy(
             labels=labels, predictions=predictions["classes"])}
     return tf.estimator.EstimatorSpec(
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
@@ -98,7 +102,7 @@ def tensorflow_model(data):
 
     img_data = img.getdata()
     img_wide = (255-np.float32(np.array(list(img_data.resize(STANDARD_SIZE)))))/255
-    predict_input_fn = tf.estimator.inputs.numpy_input_fn(
+    predict_input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
         x={"x": np.array([img_wide])},
         num_epochs=1,
         shuffle=False)
