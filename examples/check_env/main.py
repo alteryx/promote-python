@@ -9,12 +9,9 @@ def check_env(TESTDATA):
             'requests_version': requests.__version__}
 
 # instanciate the Promote class with our API information
-# USERNAME = 'username'
-# API_KEY = 'your_api_key'
-# PROMOTE_URL = 'http://www.promote_url.com'
-USERNAME = 'ming'
-API_KEY = '6a7927c1-2464-466b-b297-f5d4de821421'
-PROMOTE_URL = 'http://172.27.96.55/'
+USERNAME = 'username'
+API_KEY = 'your_api_key'
+PROMOTE_URL = 'http://www.promote_url.com'
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
