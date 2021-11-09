@@ -1,3 +1,3 @@
 promote
-schema==0.6.5
-newspaper3k==0.2.2
+schema
+newspaper3k

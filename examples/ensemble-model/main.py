@@ -1,4 +1,5 @@
 import promote
+import joblib
 from schema import Schema
 
 USERNAME = "colin"
@@ -8,7 +9,6 @@ PROMOTE_URL = "https://promote.c.yhat.com/"
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
 
 # load our ensemble model weights
-from sklearn.externals import joblib
 ENSEMBLE = joblib.load('./objects/ensemble.pkl')
 
 # add metadata
@@ -29,7 +29,7 @@ TESTDATA = [[5.1, 3.5], [6.7, 3.1]]
 ensembleModel(TESTDATA)
 
 # name and deploy our model
-p.deploy("EnsembleClassifier", ensembleModel, TESTDATA, confirm=True, dry_run=True, verbose=1)
+p.deploy("EnsembleClassifier", ensembleModel, TESTDATA, confirm=True, dry_run=False, verbose=1)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("EnsembleClassifier", TESTDATA)

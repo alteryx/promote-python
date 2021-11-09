@@ -1,3 +1,4 @@
+import joblib
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import datasets
 
@@ -14,5 +15,4 @@ KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
                      weights='uniform')
 
 # save our trained model to a pickle file so we can use it later
-from sklearn.externals import joblib
 joblib.dump(knn, './objects/model_weights.pkl')

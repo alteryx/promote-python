@@ -1,2 +1,2 @@
-promote==1.10.0
-h2o==3.26.0.2
+promote
+h2o

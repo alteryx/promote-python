@@ -1,7 +1,7 @@
+import joblib
 from sklearn import datasets
 from sklearn.ensemble import VotingClassifier
 
-from sklearn.externals import joblib
 model1 = joblib.load('./objects/decision_tree.pkl')
 model2 = joblib.load('./objects/knn.pkl')
 model3 = joblib.load('./objects/svc.pkl')

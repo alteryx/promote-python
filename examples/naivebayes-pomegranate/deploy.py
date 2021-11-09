@@ -11,8 +11,8 @@ def NaiveBayes(data):
     r = model.predict(data).tolist()
     return r
 
-USERNAME = "ross"
-API_KEY = "your_api_key"
+USERNAME = "USERNAME"
+API_KEY = "APIKEY"
 PROMOTE_URL = "https://promote.c.yhat.com/"
 
 p = promote.Promote(USERNAME, API_KEY, PROMOTE_URL)
