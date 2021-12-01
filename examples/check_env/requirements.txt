@@ -1,1 +1,1 @@
-git+https://git@github.com/alteryx/promote-python@python310
+promote
