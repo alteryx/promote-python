@@ -9,14 +9,20 @@ tensorflow/
 ├── README.md
 ├── objects
 │   └── image.png
-├── cnn_mnist.py
+├── mnist.py ==> this is working with tensorflow version >= 2.2
+├── cnn_mnist.py ==> this was working with tensorflow version < 2 
 ├── main.py
 └── requirements.txt
 ```
 
 ### Instructions
 
-Tensorflow only supports python 3.6-3.8 - so make sure you're on a version in that range.
+Tensorflow only supports python >= 3.6 - so make sure you're on a version in that range.
+
+Tensorflow 2 also need install graphviz which is included in file promote.sh. To manually install graphviz, please run:
+```bash
+yum install -y graphviz
+```
 
 In a terminal shell run:
 ```bash
@@ -24,7 +30,7 @@ In a terminal shell run:
 $ pip install -r requirements.txt
 
 # train and save tensorflow model
-$ python cnn_mnist.py
+$ python mnist.py
 
 #deploy trained tensorflow model to Promote
 $ python main.py
