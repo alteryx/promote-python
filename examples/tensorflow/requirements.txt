@@ -16,6 +16,7 @@ h5py
 keras
 Keras-Preprocessing
 Markdown
+matplotlib
 numpy
 oauthlib
 opt-einsum
