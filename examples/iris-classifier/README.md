@@ -25,7 +25,7 @@ $ pip install promote
 $ python train.py
 
 # lastly, deploy the model
-$ python deploy.py
+$ python main.py
 ```
 
 Example input:

@@ -35,10 +35,10 @@ and returns:
 In a terminal shell run:
 
 ```bash
-$ pip install requirements.txt
+$ pip install -r requirements.txt
 
 # next, train the model
-$ train-naivebayes.py
+$ python train-naivebayes.py
 
 # lastly, deploy the model
 $ python deploy.py

@@ -16,6 +16,8 @@ tensorflow/
 
 ### Instructions
 
+Tensorflow only supports python 3.6-3.8 - so make sure you're on a version in that range.
+
 In a terminal shell run:
 ```bash
 # install tensorflow & other requirements
