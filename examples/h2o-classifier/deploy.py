@@ -14,7 +14,7 @@ def helloh2o(data):
     h2o_data = h2o.H2OFrame(data)
     # Predict!
     prediction = model.predict(h2o_data)
-    model_response = prediction.as_data_frame().to_dict()
+    model_response = prediction.as_data_frame(header=True).to_dict()
 
     # h2o will automatically hold on to the prediction data, which is a feature we don't need in promote
     # you must use h2o.remove() to remove this prediction from memory, otherwise you will eventually run

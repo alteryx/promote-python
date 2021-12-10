@@ -1,3 +1,4 @@
+import joblib
 from sklearn import datasets
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -8,5 +9,4 @@ y = iris.target
 clf2 = KNeighborsClassifier(n_neighbors=7)
 clf2 = clf2.fit(X,y)
 
-from sklearn.externals import joblib
 joblib.dump(clf2, './objects/knn.pkl')

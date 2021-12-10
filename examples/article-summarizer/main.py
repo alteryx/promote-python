@@ -1,8 +1,9 @@
 import promote
-from schema import Schema
-
 import newspaper
+from schema import Schema
 from newspaper import Article
+import nltk
+nltk.download('punkt')
 
 USERNAME = "colin"
 API_KEY = "your_api_key"
@@ -28,7 +29,7 @@ TESTDATA = {"url": TESTURL}
 print(ArticleSummarizer(TESTDATA))
 
 # name and deploy our model
-p.deploy("ArticleSummarizer", ArticleSummarizer, TESTDATA, confirm=True, dry_run=True)
+p.deploy("ArticleSummarizer", ArticleSummarizer, TESTDATA, confirm=True, dry_run=False)
 
 # once our model is deployed and online, we can send data and recieve predictions
 # p.predict("ArticleSummarizer", testdata)

@@ -22,4 +22,4 @@ TESTDATA = [{"id": 1, "name": "Colin"}, {"id": 2, "name": "Ross"}]
 print(helloWorldVec(TESTDATA))
 
 p.deploy("HelloModelVec", helloWorldVec, TESTDATA,
-         confirm=False, dry_run=True, verbose=1)
+         confirm=False, dry_run=False, verbose=1)

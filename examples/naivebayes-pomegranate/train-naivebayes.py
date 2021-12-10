@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from pomegranate import NaiveBayes, NormalDistribution
 
 n, d, m = 50000, 5, 10
-X, y = make_blobs(n, d, m, cluster_std=10)
+X, y = make_blobs(n, d, centers=m, cluster_std=10)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
 
 n_unlabeled = int(X_train.shape[0] * 0.999)

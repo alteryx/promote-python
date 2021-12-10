@@ -17,6 +17,10 @@ tensorflow/
 
 ### Instructions
 
+Tensorflow only supports python >= 3.6 - so make sure you're on a version in that range.
+
+Tensorflow 2 also need install graphviz which is included in file promote.sh. To manually install graphviz, please visit [Hot to install Graphviz](https://graphviz.org/download/)
+
 In a terminal shell run:
 ```bash
 # install tensorflow & other requirements

@@ -1,3 +1,4 @@
+import joblib
 from sklearn import datasets
 from sklearn.tree import DecisionTreeClassifier
 
@@ -9,5 +10,4 @@ y = iris.target
 clf1 = DecisionTreeClassifier(max_depth=4)
 clf1 = clf1.fit(X,y)
 # save our trained model to a pickle file so we can use it later
-from sklearn.externals import joblib
 joblib.dump(clf1, './objects/decision_tree.pkl')

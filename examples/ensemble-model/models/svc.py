@@ -1,3 +1,4 @@
+import joblib
 from sklearn import datasets
 from sklearn.svm import SVC
 
@@ -8,5 +9,4 @@ y = iris.target
 clf3 = SVC(kernel='rbf', probability=True)
 clf3 = clf3.fit(X,y)
 
-from sklearn.externals import joblib
 joblib.dump(clf3, './objects/svc.pkl')
